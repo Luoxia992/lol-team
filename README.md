@@ -11,6 +11,7 @@
 ### 数据库
 
 #### 建表语句
+```
 CREATE TABLE `user` (
   `userId` int(11) NOT NULL,
   `username` varchar(255) NOT NULL COMMENT '用户名',
@@ -20,6 +21,7 @@ CREATE TABLE `user` (
   `occupation` varchar(255) NOT NULL COMMENT '擅长位置',
   PRIMARY KEY (`userId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+```
 
 
 ### 项目初始化
