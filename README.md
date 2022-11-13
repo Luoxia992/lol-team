@@ -49,6 +49,8 @@ npm run serve
 - vue.js
 - vue-cli
 - vue-router
+#### ui框架：
+- elment ui
 
 ### 后端：
 
