@@ -10,12 +10,17 @@
 
 ### 数据库
 
-数据库表中类型都是为 varchar，建了简单表， user表结构如下：
+#### 建表语句
+CREATE TABLE `user` (
+  `userId` int(11) NOT NULL,
+  `username` varchar(255) NOT NULL COMMENT '用户名',
+  `password` varchar(255) NOT NULL COMMENT '密码',
+  `email` varchar(255) NOT NULL COMMENT '邮箱',
+  `rankLevel` varchar(255) NOT NULL COMMENT '段位',
+  `occupation` varchar(255) NOT NULL COMMENT '擅长位置',
+  PRIMARY KEY (`userId`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-username|password|email
----|:--:|---:
-user|user|user@163.com
-admin|admin|admin@163.com
 
 ### 项目初始化
 ```
