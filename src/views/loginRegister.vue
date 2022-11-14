@@ -131,6 +131,8 @@
 					.then( res => {
 						switch(res.data){
 							case 0: 
+								this.$router.push('/organizeteam')
+
 								alert("登陆成功！");
 								break;
 							case -1:
