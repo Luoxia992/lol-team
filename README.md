@@ -5,6 +5,11 @@
 实现登录和注册两个功能，实现全栈，数据记录在数据库，前后端分离
 
 ------
+## 推荐IDE
+vscode
+### 插件
+Vue Language Features (Volar)
+
 
 ## 项目部署
 
