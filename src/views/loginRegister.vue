@@ -20,7 +20,6 @@
 						<span class="errTips" v-if="existed">* 用户名已经存在！ *</span>
 						<el-input type="password" placeholder="密码" v-model="form.userpwd" />
             <el-input type="email" placeholder="邮箱" v-model="form.useremail"/>
-						
             <el-select v-model="form.rankLevel" placeholder="历史最高段位">
 							<el-option
 							v-for="item in options"
