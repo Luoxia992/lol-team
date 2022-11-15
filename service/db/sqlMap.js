@@ -1,6 +1,6 @@
 var sqlMap = {
     user: {
-        add: 'insert into user (username, email, password, rankLevel, occupation) values (?,?,?,?,?)',
+        add: 'insert into user (username,password,email,rankLevel,occupation) values (?,?,?,?,?)',
         select: 'select * from user'
     }
 }

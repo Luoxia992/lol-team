@@ -43,7 +43,7 @@ router.post('/add', (req, res) => {
 		if (results.length != 0 && params.username == results[0].username) {
 			res.send("-1");   // -1 表示用户名已经存在
 		} else {
-			conn.query(add_sql, [params.username, params.email, params.password], (err, rst) => {
+			conn.query(add_sql, [params.username, params.password,params.email,params.rankLevel,params.occupation], (err, rst) => {
 				if (err) {
 					console.log(err);
 				} else{

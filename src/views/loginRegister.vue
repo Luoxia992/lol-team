@@ -75,7 +75,7 @@
 
 				},
         options: [{
-          value: '10',
+          value: '9',
           label: '钻石及以上'
         }, {
           value: '8',
@@ -157,8 +157,10 @@
 						url: 'http://127.0.0.1:10520/api/user/add',
 						data: {
 							username: self.form.username,
+							password: self.form.userpwd,
 							email: self.form.useremail,
-							password: self.form.userpwd
+							rankLevel: self.form.rankLevel,
+							occupation: self.form.occupation
 						}
 					})
 					.then( res => {
