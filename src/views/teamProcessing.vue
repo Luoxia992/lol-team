@@ -5,11 +5,13 @@
       <el-menu-item index="2">开黑语音</el-menu-item>
       <el-menu-item index="3" disabled>战绩查询</el-menu-item>
       <el-menu-item index="4" disabled>消息中心</el-menu-item>
+      <el-menu-item style="padding-left: 1450px;" index="5">退出登录</el-menu-item>
     </el-menu>
     
     <el-row>
       <!-- 欢迎画面 -->
       <el-row v-if="welcomeScreen">
+        <!--TODO-->
         <iframe src="https://101.qq.com/#/hero-rank-interest?tier=30" width="100%" height="900px" allowtransparency="true" frameborder="0"></iframe>
       </el-row>
       <!-- 组队中心 -->
@@ -123,6 +125,9 @@ export default {
         }
         if(key == 2) {
           this.viewId= 'voice'
+        }
+        if(key == 5) {
+          this.$router.go(-1)
         }
       },
 
