@@ -1,10 +1,13 @@
 <template>
+	<div id='building'>
 	<div class="login-register">
 		<div class="contain">
-			<div class="big-box" :class="{active:isLogin}">
-				<div class="big-contain" key="bigContainLogin" v-if="isLogin">
-          
-					<div class="btitle">账户登录</div>
+		<div class="big-box" :class="{active:isLogin}">
+		<div class="big-contain" key="bigContainLogin" v-if="isLogin">
+			<div class="css-i7pvjw e1sjm9eu0">
+			<img src="../assets/logo.png">
+		</div>
+		<div class="btitle">账户登录</div>
           <div class="bform" >
 						<el-input type="email" placeholder="邮箱" v-model="form.useremail"/>
 						<span class="errTips" v-if="emailError">* 邮箱填写错误 *</span>
@@ -57,6 +60,7 @@
 			</div>
 		</div>
 	</div>
+</div>
 </template>
 
 <script>
@@ -208,6 +212,14 @@
 </script>
 
 <style scoped="scoped">
+
+	#building{
+	background:url("https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fi2.hdslb.com%2Fbfs%2Farchive%2Fab826a6f3cf171f04971197e2c92532387a8b6e0.jpg&refer=http%3A%2F%2Fi2.hdslb.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1671091406&t=f1628ce78000e6bc335d336ba36a739b");
+	width:100%;
+	height:100%;
+	position:fixed;
+	background-size:100% 100%;
+	}
 	.login-register{
 		width: 100vw;
 		height: 100vh;
