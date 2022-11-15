@@ -1,4 +1,4 @@
-<template :rules="rules">
+<template>
 	<div class="login-register">
 		<div class="contain">
 			<div class="big-box" :class="{active:isLogin}">
@@ -16,6 +16,9 @@
 				<div class="big-contain" key="bigContainRegister" v-else>
 
 		<div class="btitle">创建账户</div>
+		<div class="css-i7pvjw e1sjm9eu0">
+			<img src="https://opgg-static.akamaized.net/logo/20221108052938.02cda0e597d34bf28297cd39ff6ccf2b.png?image=q_auto,f_webp,w_auto&amp;v=1668492741733" alt="OP.GG logo (2022 World Championship Winner DRX)" title="2022 World Championship Winner DRX">
+		</div>
 		<div class="lform">
 			<el-input type="text" placeholder="请输入用户名" v-model="form.username" :class="{empty:existed}"/>
 			<el-input type="password" placeholder="请输入密码" v-model="form.userpwd" :class="{passEmpty:passExisted}" />
@@ -217,7 +220,7 @@
 		top: 50%;
 		left: 50%;
 		transform: translate(-50%,-50%);
-		background-color: #fff;
+		background-color: rgb(19, 17, 17);
 		border-radius: 20px;
 		box-shadow: 0 0 3px #f0f0f0,
 					0 0 6px #f0f0f0;
