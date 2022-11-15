@@ -1,4 +1,4 @@
-<template>
+<template :rules="rules">
 	<div class="login-register">
 		<div class="contain">
 			<div class="big-box" :class="{active:isLogin}">
@@ -14,12 +14,12 @@
 					<button class="bbutton" @click="login">登录</button>
 				</div>
 				<div class="big-contain" key="bigContainRegister" v-else>
-					<div class="btitle">创建账户</div>
-					<div class="lform">
-						<el-input type="text" placeholder="用户名" v-model="form.username"/>
-						<span class="errTips" v-if="existed">* 用户名已经存在！ *</span>
-						<el-input type="password" placeholder="密码" v-model="form.userpwd" />
-            <el-input type="email" placeholder="邮箱" v-model="form.useremail"/>
+
+		<div class="btitle">创建账户</div>
+		<div class="lform">
+			<el-input type="text" placeholder="请输入用户名" v-model="form.username" :class="{empty:existed}"/>
+			<el-input type="password" placeholder="请输入密码" v-model="form.userpwd" :class="{passEmpty:passExisted}" />
+            <el-input type="email" placeholder="邮箱" v-model="form.useremail" />
             <el-select v-model="form.rankLevel" placeholder="历史最高段位">
 							<el-option
 							v-for="item in options"
@@ -37,7 +37,6 @@
 							</el-option>
 						</el-select>
           </div>
-					
 					<button class="bbutton" @click="register">注册</button>
 				</div>
 			</div>
@@ -66,6 +65,8 @@
 				emailError: false,
 				passwordError: false,
 				existed: false,
+				passExisted: false,
+				newSign: false,
 				form:{
 					username:'',
 					useremail:'',
@@ -115,6 +116,8 @@
 				this.form.username = ''
 				this.form.useremail = ''
 				this.form.userpwd = ''
+				this.existed = false;
+				this.passExisted = false;
 			},
 			login() {
 				const self = this;
@@ -131,8 +134,9 @@
 						switch(res.data){
 							case 0: 
 								this.$router.push('/organizeteam')
-
-								alert("登陆成功！");
+								if(!self.newSign){
+								  this.$message.success("登陆成功！");
+								}
 								break;
 							case -1:
 								this.emailError = true;
@@ -150,8 +154,10 @@
 				}
 			},
 			register(){
+				this.existed = false;
+				this.passExisted = false;
 				const self = this;
-				if(self.form.username != "" && self.form.useremail != "" && self.form.userpwd != ""){
+				if(self.form.username != "" && self.form.userpwd != ""){
 					self.$axios({
 						method:'post',
 						url: 'http://127.0.0.1:10520/api/user/add',
@@ -166,11 +172,14 @@
 					.then( res => {
 						switch(res.data){
 							case 0:
-								alert("注册成功！");
+								this.$message.success("注册成功！");
+								this.newSign = true;
 								this.login();
 								break;
 							case -1:
 								this.existed = true;
+								this.form.username = '';
+								this.$message.error("用户名已存在，请重新输入!")
 								break;
 						}
 					})
@@ -178,7 +187,17 @@
 						console.log(err);
 					})
 				} else {
-					alert("填写不能为空！");
+					if(self.form.username === "" && self.form.userpwd === ""){
+						this.existed = true;
+						this.passExisted = true;
+						this.$message.error("用户名和密码不能为空！");
+					}else if(self.form.username === ""){
+						this.existed = true;
+						this.$message.error("用户名不能为空！");
+					}else if(self.form.userpwd === ""){
+						this.passExisted = true;
+						this.$message.error("密码不能为空！");
+					}
 				}
 			}
 		}
@@ -277,6 +296,13 @@
 		outline: none;
   }
 
+  .lform .empty{
+	border: red 1px solid;
+  }
+  .lform .passEmpty{
+	border: red 1px solid;
+  } 
+
 	.bbutton{
 		width: 20%;
 		height: 40px;
@@ -345,4 +371,7 @@
 		transform: translateX(-100%);
 		transition: all 1s;
 	}
+    .empty {
+		border: red 1px solid;
+    }
 </style>
