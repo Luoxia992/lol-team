@@ -73,7 +73,7 @@
                 :route="{ name: 'myarticle', params: $route.params.id }"
               >
                 <i class="el-icon-edit-outline"></i>
-                <span slot="title">历史战绩</span>
+                <span slot="title">修改信息</span>
               </el-menu-item>
               <el-menu-item
                 index="mycollect"
@@ -94,7 +94,7 @@
                 :route="{ name: 'myfollow', params: $route.params.id }"
               >
                 <i class="el-icon-circle-plus-outline"></i>
-                <span slot="title">关注</span>
+                <span slot="title">历史战绩</span>
               </el-menu-item>
             </el-menu>
           </el-card>
