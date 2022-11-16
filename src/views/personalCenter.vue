@@ -73,21 +73,21 @@
                 :route="{ name: 'myarticle', params: $route.params.id }"
               >
                 <i class="el-icon-edit-outline"></i>
-                <span slot="title">发帖</span>
+                <span slot="title">历史战绩</span>
               </el-menu-item>
               <el-menu-item
                 index="mycollect"
                 :route="{ name: 'mycollect', params: $route.params.id }"
               >
                 <i class="el-icon-document"></i>
-                <span slot="title">收藏</span>
+                <span slot="title">上次组队</span>
               </el-menu-item>
               <el-menu-item
                 index="myfan"
                 :route="{ name: 'myfan', params: $route.params.id }"
               >
                 <i class="el-icon-tableware"></i>
-                <span slot="title">粉丝</span>
+                <span slot="title">拉黑</span>
               </el-menu-item>
               <el-menu-item
                 index="myfollow"
