@@ -140,7 +140,8 @@
 					.then( res => {
 						switch(res.data){
 							case 0: 
-								this.$router.push('/organizeteam')
+								const param = self.form.useremail
+								this.$router.push({path:'/organizeteam',query:{email: param}})
 								if(!self.newSign){
 								  this.$message.success("登陆成功！");
 								}

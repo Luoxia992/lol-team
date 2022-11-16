@@ -6,7 +6,7 @@
           <img v-image-preview :src="avatar" />
         </div> -->
         <div>
-  </div>
+      </div>
         <div class="PersonTop_text">
           <div class="user_text">
           <div class="avtart">
@@ -122,9 +122,12 @@ export default {
     },
   methods:{
     init(data){
-      this.detailVisible=true;
-      console.log(data);
+      this.detailVisible = true
+      console.log(data)
+      this.userId = data
+      this.avatar = multiavatar(this.userId)
     },
+
     changeInput(value) {
       console.log('b', value)
       this.avatar = multiavatar(value)

@@ -87,6 +87,7 @@ export default {
         welcomeScreen: true,
         viewId: '',
         Visiable:false,
+        loginEmail:'',
         tableData: [{
           date: '小仙女拉克丝',
           name: '大师',
@@ -148,7 +149,8 @@ export default {
         this.multipleSelection = val;
       },
 
-      handleClick(data){
+      handleClick(init){
+          const data = this.$route.query.email
           this.Visiable=true;
           this.$nextTick(()=>{
           this.$refs.dialog.init(data);
