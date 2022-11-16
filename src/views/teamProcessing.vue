@@ -5,9 +5,12 @@
       <el-menu-item index="2">开黑语音</el-menu-item>
       <el-menu-item index="3" disabled>战绩查询</el-menu-item>
       <el-menu-item index="4" disabled>消息中心</el-menu-item>
-      <el-menu-item style="padding-left: 1450px;" index="5">退出登录</el-menu-item>
+      <div style="padding-left: 5000px;"></div>
+      <el-menu-item index="5">退出登录</el-menu-item>
     </el-menu>
-    
+    <button @click="handleClick('init')">个人中心</button>
+    <dialog-component v-if="Visiable" ref="dialog"></dialog-component>
+
     <el-row>
       <!-- 欢迎画面 -->
       <el-row v-if="welcomeScreen">
@@ -69,20 +72,21 @@
         <iframe src="https://kookapp.cn/widget?id=4876588041648115&theme=dark" width="100%" height="700px" allowtransparency="true" frameborder="0"></iframe>
       </el-row>
     </el-row>
-  
-    
-
-
   </el-row>
 </template>
 <script>
+import dialogComponent from './personalCenter.vue'
+
 export default {
+    components:{
+      dialogComponent
+    },
     data() {
       return {
         // 欢迎画面，开发文档开关
         welcomeScreen: true,
         viewId: '',
-
+        Visiable:false,
         tableData: [{
           date: '小仙女拉克丝',
           name: '大师',
@@ -142,7 +146,14 @@ export default {
       // },
       handleSelectionChange(val) {
         this.multipleSelection = val;
-      }
+      },
+
+      handleClick(data){
+          this.Visiable=true;
+          this.$nextTick(()=>{
+          this.$refs.dialog.init(data);
+          })
+        }
 
     }
   }
@@ -199,6 +210,4 @@ export default {
   .el-carousel__item:nth-child(2n+1) {
     background-color: #d3dce6;
   }
-  /* 首页 */
-
 </style>

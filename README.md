@@ -39,6 +39,7 @@ npm install
 cd service
 npm install
 node app.js
+npm install @multiavatar/multiavatar
 ```
 
 ### 运行前端项目
