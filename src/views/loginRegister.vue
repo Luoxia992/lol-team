@@ -310,14 +310,24 @@
 		border: none;
 		outline: none;
   }
-
-  .lform .empty{
+  /* error状态输入框框体变红*/
+  /* .lform .empty{
 	border: red 1px solid;
+  } */
+
+  /* error状态 placeholder字体变红*/
+  .empty /deep/ input::-webkit-input-placeholder{
+  -webkit-text-fill-color: red;
   }
-  .lform .passEmpty{
+  /* error状态输入框框体变红*/
+  /* .lform .passEmpty{
 	border: red 1px solid;
-  } 
+  }  */
 
+  /* error状态 placeholder字体变红*/
+  .passEmpty /deep/ input::-webkit-input-placeholder{
+  -webkit-text-fill-color: red;
+  }
 	.bbutton{
 		width: 20%;
 		height: 40px;
