@@ -38,8 +38,8 @@ npm install
 ```
 cd service
 npm install
-node app.js
 npm install @multiavatar/multiavatar
+node app.js
 ```
 
 ### 运行前端项目
