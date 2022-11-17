@@ -85,8 +85,10 @@ router.post('/changeName', (req, res) => {
 	
 	conn.query(sel_sql, params.email, (error, results) => {
 			conn.query(upd_sql, [params.userName,results[0].userId], (err, rst) => {
+				console.log(upd_sql);
 				if (err) {
 					console.log(err);
+					res.send("-1");
 				} else{
 					console.log(rst);
 					res.send("0"); // 0 表示用户创建成功
