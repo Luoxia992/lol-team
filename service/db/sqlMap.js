@@ -1,7 +1,8 @@
 var sqlMap = {
     user: {
         add: 'insert into user (username,password,email,rankLevel,occupation) values (?,?,?,?,?)',
-        select: 'select * from user'
+        select: 'select * from user',
+        update: 'update user set email = (?) where userId = (?)'
     }
 }
 
