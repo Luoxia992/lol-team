@@ -23,7 +23,7 @@
               <span> {{ design }}</span>
             </div>
             <div class="user_anniu">
-              <el-button class="el-icon-edit" type="primary" size="small" plain @click="edit">编辑</el-button>
+              <el-button class="el-icon-edit" type="primary" size="small" plain @click="edit">修改用户名</el-button>
               <el-button v-show="!userEmailEdit" type="primary" size="small" plain @click="save">保存</el-button>
             </div>
           </div>
