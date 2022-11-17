@@ -13,7 +13,7 @@
            <div v-html="avatar" class="avtart-block"></div>
           </div>
             <div class="user_name">
-                <el-input :disabled="userEmailEdit" class="input-text" v-model="userId" @input="changeInput" style="height:33px" placeholder="输入昵称生成你的头像吧！"></el-input>
+                <el-input :disabled="userNameEdit" class="input-text" v-model="userId" @input="changeInput" style="height:33px" placeholder="输入昵称生成你的头像吧！"></el-input>
             </div>
             <div class="user-v">
               <span class="user-v-font">黄金</span>
@@ -24,7 +24,7 @@
             </div>
             <div class="user_anniu">
               <el-button class="el-icon-edit" type="primary" size="small" plain @click="edit">编辑</el-button>
-              <el-button v-show="!userEmailEdit" type="primary" size="small" plain @click="save">保存</el-button>
+              <el-button v-show="!userNameEdit" type="primary" size="small" plain @click="save">保存</el-button>
             </div>
           </div>
           <div class="user_num">
@@ -110,9 +110,9 @@ export default {
       return{
         avatar: '',
         userId: '',
-        editEmail: '',
+        loginEmail: '',
         watch: {},
-        userEmailEdit: false,
+        userNameEdit: false,
         detailVisible:false
       }
     },
@@ -120,17 +120,18 @@ export default {
     init(data){
       this.detailVisible = true
       console.log(data)
+      this.loginEmail = data
       this.initFunction(data)
     },
 
     changeInput(value) {
       console.log('b', value)
-      this.editEmail = value
+      this.userId = value
       this.avatar = multiavatar(value)
     },
 
     edit(){
-      this.userEmailEdit = false
+      this.userNameEdit = false
     },
 
     //初始化查询用户名
@@ -146,7 +147,7 @@ export default {
 					.then( res => {
             this.userId = res.data
             this.avatar = multiavatar(this.userId)
-            this.userEmailEdit = true
+            this.userNameEdit = true
 					})
 					.catch( err => {
 						console.log(err);
@@ -157,9 +158,10 @@ export default {
       const self = this;
 					self.$axios({
 						method:'post',
-						url: 'http://127.0.0.1:10520/api/user/changeEmail',
+						url: 'http://127.0.0.1:10520/api/user/changeName',
 						data: {
-							email: self.editEmail
+              email: this.loginEmail,
+							userName: this.userId
 						}
 					})
 					.then( res => {
@@ -167,6 +169,7 @@ export default {
 							case 0: 
 								if(!self.newSign){
 								  this.$message.success("保存成功！");
+                  this.userNameEdit = true
 								}
 								break;
 							case -1:

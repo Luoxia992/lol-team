@@ -76,21 +76,15 @@ router.post('/selectUserName', (req, res) => {
 	})
 });
 
-// 个人中心 邮箱修改 TODO
-router.post('/changeEmail', (req, res) => {
+// 个人中心用户名修改 TODO
+router.post('/changeName', (req, res) => {
 	const params = req.body;
 	const sel_sql = $sql.user.select + " where email = '" + params.email + "'";
-	const upd_sql = $sql.user.add;
+	const upd_sql = $sql.user.update;
 	console.log(sel_sql);
 	
-	conn.query(sel_sql, params.username, (error, results) => {
-		if(error) {
-			console.log(err);
-		}
-		if (results.length != 0 && params.username == results[0].username) {
-			res.send("-1");   // -1 表示用户名已经存在
-		} else {
-			conn.query(upd_sql, [params.email, params.oldEmail], (err, rst) => {
+	conn.query(sel_sql, params.email, (error, results) => {
+			conn.query(upd_sql, [params.userName,results[0].userId], (err, rst) => {
 				if (err) {
 					console.log(err);
 				} else{
@@ -98,7 +92,7 @@ router.post('/changeEmail', (req, res) => {
 					res.send("0"); // 0 表示用户创建成功
 				}
 			});
-		}
+
 	});
 });
 
