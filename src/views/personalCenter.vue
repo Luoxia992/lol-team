@@ -1,35 +1,41 @@
 <template>
-  <el-dialog title="欢迎菜鸡" :visible.sync="detailVisible" :close-on-click-modal='false' width="55%">
-      <div class="el-dialog-div">
+  <el-dialog title="欢迎菜鸡" :visible.sync="detailVisible" :close-on-click-modal='false'
+             width="55%">
+    <div class="el-dialog-div">
       <div class="PersonTop">
         <!-- <div class="PersonTop_img">
           <img v-image-preview :src="avatar" />
         </div> -->
         <div>
-      </div>
+        </div>
         <div class="PersonTop_text">
           <div class="user_text">
-          <div class="avtart">
-           <div v-html="avatar" class="avtart-block"></div>
-          </div>
+            <div class="avtart">
+              <div v-html="avatar" class="avtart-block"></div>
+            </div>
             <div class="user_name">
-                <el-input :disabled="userNameEdit" class="input-text" v-model="userId" @input="changeInput" style="height:33px" placeholder="输入昵称生成你的头像吧！"></el-input>
+              <el-input :disabled="userNameEdit" class="input-text" v-model="userId"
+                        @input="changeInput" style="height:33px"
+                        placeholder="输入昵称生成你的头像吧！"></el-input>
             </div>
             <div class="user-v">
               <span class="user-v-font">黄金</span>
             </div>
             <div class="user_qianming">
-                休息嘻嘻嘻嘻嘻嘻
+              休息嘻嘻嘻嘻嘻嘻
               <span> {{ design }}</span>
             </div>
             <div class="user_anniu">
-              <el-button class="el-icon-edit" type="primary" size="small" plain @click="edit">编辑</el-button>
-              <el-button v-show="!userNameEdit" type="primary" size="small" plain @click="save">保存</el-button>
+              <el-button class="el-icon-edit" type="primary" size="small" plain @click="edit">编辑
+              </el-button>
+              <el-button v-show="!userNameEdit" type="primary" size="small" plain @click="save">
+                保存
+              </el-button>
             </div>
           </div>
           <div class="user_num">
             <div style="cursor: pointer" @click="">
-              <div class="num_number">{{  }}</div>
+              <div class="num_number">{{ }}</div>
               <span class="num_text">粉丝</span>
             </div>
             <div style="cursor: pointer" @click="">
@@ -48,44 +54,44 @@
           <el-card class="box-card" :body-style="{ padding: '0px' }">
             <div slot="header" class="clearfix">
               <span class="person_body_list" style="border-bottom: none"
-                >个人中心</span>
+              >个人中心</span>
             </div>
             <el-menu
-              router
-              active-text-color="#00c3ff"
-              class="el-menu-vertical-demo"
-                 >
+                router
+                active-text-color="#00c3ff"
+                class="el-menu-vertical-demo"
+            >
               <el-menu-item
-                index="info"
-                :route="{ name: 'info', params: $route.params.id }"
+                  index="info"
+                  :route="{ name: 'info', params: $route.params.id }"
               >
                 <i class="el-icon-user"></i>
                 <span slot="title">个人简介</span>
               </el-menu-item>
               <el-menu-item
-                index="myarticle"
-                :route="{ name: 'myarticle', params: $route.params.id }"
+                  index="myarticle"
+                  :route="{ name: 'myarticle', params: $route.params.id }"
               >
                 <i class="el-icon-edit-outline"></i>
                 <span slot="title">修改信息</span>
               </el-menu-item>
               <el-menu-item
-                index="mycollect"
-                :route="{ name: 'mycollect', params: $route.params.id }"
+                  index="mycollect"
+                  :route="{ name: 'mycollect', params: $route.params.id }"
               >
                 <i class="el-icon-document"></i>
                 <span slot="title">上次组队</span>
               </el-menu-item>
               <el-menu-item
-                index="myfan"
-                :route="{ name: 'myfan', params: $route.params.id }"
+                  index="myfan"
+                  :route="{ name: 'myfan', params: $route.params.id }"
               >
                 <i class="el-icon-tableware"></i>
                 <span slot="title">拉黑</span>
               </el-menu-item>
               <el-menu-item
-                index="myfollow"
-                :route="{ name: 'myfollow', params: $route.params.id }"
+                  index="myfollow"
+                  :route="{ name: 'myfollow', params: $route.params.id }"
               >
                 <i class="el-icon-circle-plus-outline"></i>
                 <span slot="title">历史战绩</span>
@@ -98,26 +104,26 @@
         </div>
       </div>
     </div>
-</el-dialog>
+  </el-dialog>
 </template>
-    
+
 <script>
 import multiavatar from '@multiavatar/multiavatar'
 
 export default {
-    name: "dialogComponent",
-    data(){
-      return{
-        avatar: '',
-        userId: '',
-        loginEmail: '',
-        watch: {},
-        userNameEdit: false,
-        detailVisible:false
-      }
-    },
-  methods:{
-    init(data){
+  name: "dialogComponent",
+  data() {
+    return {
+      avatar: '',
+      userId: '',
+      loginEmail: '',
+      watch: {},
+      userNameEdit: false,
+      detailVisible: false
+    }
+  },
+  methods: {
+    init(data) {
       this.detailVisible = true
       console.log(data)
       this.loginEmail = data
@@ -130,56 +136,56 @@ export default {
       this.avatar = multiavatar(value)
     },
 
-    edit(){
+    edit() {
       this.userNameEdit = false
     },
 
     //初始化查询用户名
-    initFunction(data){
+    initFunction(data) {
       const self = this;
-					self.$axios({
-						method:'post',
-						url: 'http://127.0.0.1:10520/api/user/selectUserName',
-						data: {
-							email: data
-						}
-					})
-					.then( res => {
-            this.userId = res.data
-            this.avatar = multiavatar(this.userId)
-            this.userNameEdit = true
-					})
-					.catch( err => {
-						console.log(err);
-			    })
+      self.$axios({
+        method: 'post',
+        url: 'http://127.0.0.1:10520/api/user/selectUserName',
+        data: {
+          email: data
+        }
+      })
+      .then(res => {
+        this.userId = res.data
+        this.avatar = multiavatar(this.userId)
+        this.userNameEdit = true
+      })
+      .catch(err => {
+        console.log(err);
+      })
     },
 
-    save(){
+    save() {
       const self = this;
-					self.$axios({
-						method:'post',
-						url: 'http://127.0.0.1:10520/api/user/changeName',
-						data: {
-              email: this.loginEmail,
-							userName: this.userId
-						}
-					})
-					.then( res => {
-						switch(res.data){
-							case 0: 
-								if(!self.newSign){
-								  this.$message.success("保存成功！");
-                  this.userNameEdit = true
-								}
-								break;
-							case -1:
-              this.$message.error("保存失败,请重试！");
-								break;
-						}
-					})
-					.catch( err => {
-						console.log(err);
-			    })
+      self.$axios({
+        method: 'post',
+        url: 'http://127.0.0.1:10520/api/user/changeName',
+        data: {
+          email: this.loginEmail,
+          userName: this.userId
+        }
+      })
+      .then(res => {
+        switch (res.data) {
+          case 0:
+            if (!self.newSign) {
+              this.$message.success("保存成功！");
+              this.userNameEdit = true
+            }
+            break;
+          case -1:
+            this.$message.error("保存失败,请重试！");
+            break;
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      })
     }
   }
 }
@@ -198,6 +204,7 @@ export default {
   z-index: 0;
   top: 0;
 }
+
 .PersonTop {
   width: 900px;
   height: 50px;
@@ -240,17 +247,21 @@ export default {
 .user_name {
   font-weight: bold;
 }
+
 .user-v {
   margin-bottom: -5px;
 }
+
 .user-v-img {
   width: 15px;
   height: 15px;
 }
+
 .user-v-font {
   font-size: 15px;
   color: #1be989;
 }
+
 .user_qianming {
   font-size: 14px;
   color: #999;
@@ -280,7 +291,8 @@ export default {
   font-size: 20px;
   color: #333;
 }
-.el-menu-item>span {
+
+.el-menu-item > span {
   font-size: 16px;
   color: #999;
 }
@@ -311,13 +323,13 @@ export default {
   font-size: 22px;
   border-bottom: 1px solid #f0f0f0;
   background-image: -webkit-linear-gradient(
-    left,
-    rgb(42, 134, 141),
-    #e9e625dc 20%,
-    #3498db 40%,
-    #e74c3c 60%,
-    #09ff009a 80%,
-    rgba(82, 196, 204, 0.281) 100%
+      left,
+      rgb(42, 134, 141),
+      #e9e625dc 20%,
+      #3498db 40%,
+      #e74c3c 60%,
+      #09ff009a 80%,
+      rgba(82, 196, 204, 0.281) 100%
   );
   -webkit-text-fill-color: transparent;
   -webkit-background-clip: text;
@@ -331,7 +343,7 @@ export default {
 
 .person_body_right {
   width: 70%;
-  height: 450px; 
+  height: 450px;
   border-radius: 5px;
   background-color: rgb(7, 204, 211);
 }
@@ -344,9 +356,10 @@ export default {
 .el-button {
   width: 84px;
 }
+
 .el-dialog-div {
-    height: 700px;
-    overflow: auto;
+  height: 700px;
+  overflow: auto;
 }
 
 /*头像*/

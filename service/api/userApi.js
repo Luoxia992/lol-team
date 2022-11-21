@@ -35,7 +35,6 @@ router.post('/add', (req, res) => {
 	const sel_sql = $sql.user.select + " where username = '" + params.username + "'";
 	const add_sql = $sql.user.add;
 	console.log(sel_sql);
-	
 	conn.query(sel_sql, params.username, (error, results) => {
 		if(error) {
 			console.log(err);
@@ -55,12 +54,25 @@ router.post('/add', (req, res) => {
 	});
 });
 
-//个人中心查询用户名
+// 查询所有用户
+router.get("/selectAllUser", (req,res) => {
+  const sel_sql = $sql.user.select;
+
+  conn.query(sel_sql, (error, results) => {
+    if (error) {
+      throw error;
+    } else{
+      res.send(results);
+    }
+  })
+})
+
+// 个人中心查询用户名
 router.post('/selectUserName', (req, res) => {
 	const params = req.body;
 	const sel_sql = $sql.user.select + " where email = '" + params.email + "'";
 	console.log(sel_sql);
-	
+
 	conn.query(sel_sql, params.email, (error, results)=>{
 		if (error) {
 			throw error;
@@ -70,7 +82,7 @@ router.post('/selectUserName', (req, res) => {
 			res.send("-1");  // -1 表示查询不到，用户不存在，即邮箱填写错误
 		} else{
 			if (results[0].email == params.email) {
-				res.send(results[0].username);  
+				res.send(results[0].username);
 		    }
 		}
 	})
@@ -82,7 +94,7 @@ router.post('/changeName', (req, res) => {
 	const sel_sql = $sql.user.select + " where email = '" + params.email + "'";
 	const upd_sql = $sql.user.update;
 	console.log(sel_sql);
-	
+
 	conn.query(sel_sql, params.email, (error, results) => {
 			conn.query(upd_sql, [params.userName,results[0].userId], (err, rst) => {
 				if (err) {
