@@ -1,72 +1,99 @@
 <template>
-  <div id='building'>
-    <div class="login-register">
-      <div class="contain">
-        <div class="big-box" :class="{active:isLogin}">
-          <div class="big-contain" key="bigContainLogin" v-if="isLogin">
-            <!-- 登录画面部分 -->
-            <div class="btitle">账户登录</div>
-            <div class="bform">
-              <el-input type="email" placeholder="邮箱" v-model="form.useremail"/>
-              <span class="errTips" v-if="emailError">* 邮箱填写错误 *</span>
-              <el-input type="password" placeholder="密码" v-model="form.userpwd" show-password/>
-              <span class="errTips" v-if="emailError">* 密码填写错误 *</span>
-            </div>
-            <button class="bbutton" @click="login">登录</button>
-          </div>
-          <!-- 注册画面部分 -->
-          <div class="big-contain" key="bigContainRegister" v-else>
-            <div class="btitle">创建账户</div>
-            <div class="lform">
-              <el-input type="text" placeholder="请输入用户名" v-model="form.username"
-                        :class="{empty:existed}"/>
-              <el-input type="password" placeholder="请输入密码" v-model="form.userpwd"
-                        :class="{passEmpty:passExisted}"/>
-              <el-input type="email" placeholder="邮箱" v-model="form.useremail"/>
-              <el-select v-model="form.rankLevel" placeholder="历史最高段位">
-                <el-option
-                    v-for="item in options"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value">
-                </el-option>
-              </el-select>
-              <el-select v-model="form.occupation" size="" placeholder="擅长位置">
-                <el-option
-                    v-for="item in occupation"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value">
-                </el-option>
-              </el-select>
+  <div class="center">
+  <div class="container" id="container">
+    <!-- 注册画面部分 -->
+    <div class="form-container sign-up-container">
+      <form action="#">
+        <h1>注册您的账户</h1>
+        <input type="text" required="required" v-model="form.userName" placeholder="游戏昵称" />
+        <input type="email" required="required" v-model="form.useEemail" placeholder="邮箱" />
+        <input type="password" required="required" v-model="form.userPwd" placeholder="密码" />
 
-							<el-select v-model="form.occupation" size="" placeholder="擅长位置">
-                <el-option
-                    v-for="item in occupation"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value">
-                </el-option>
-              </el-select>
-            </div>
-            <button class="bbutton" @click="register">注册</button>
-          </div>
+        <el-row>
+          <el-col :span="11" >
+            <el-select v-model="form.currentRankLevel" placeholder="当前段位">
+              <el-option
+                  v-for="item in rankLevelOptions"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value">
+              </el-option>
+            </el-select>
+          </el-col>
+          <el-col :span="11" :offset="2">
+            <el-select v-model="form.bestRankLevel" placeholder="最高段位">
+              <el-option
+                  v-for="item in rankLevelOptions"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value">
+              </el-option>
+            </el-select>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="11">
+            <el-select v-model="form.priorityPosition" placeholder="首选位置">
+              <el-option
+                  v-for="item in occupationOptions"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value">
+              </el-option>
+            </el-select>
+          </el-col>
+          <el-col :span="11" :offset="2">
+            <el-select v-model="form.secondaryPosition" placeholder="次选位置">
+              <el-option
+                  v-for="item in occupationOptions"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value">
+              </el-option>
+            </el-select>
+          </el-col>
+        </el-row>
+
+        <button style="margin: 20px 0;">注册</button>
+      </form>
+    </div>
+
+    <!-- 登录画面部分 -->
+    <div class="form-container sign-in-container">
+      <form action="#" prop="register">
+        <h1>登录</h1>
+        <input type="email" required="required" v-model="form.useremail" placeholder="邮箱" />
+        <span class="errTips" v-if="emailError">* 邮箱填写错误 *</span>
+        <input type="password" v-model="form.userpwd" placeholder="密码" />
+        <span class="errTips" required="required" v-if="passwordError">* 密码填写错误 *</span>
+        <a href="#">忘记了您的密码?</a>
+        <button @click="login">登录</button>
+      </form>
+    </div>
+    <!-- 提示横幅部分 -->
+    <div class="overlay-container">
+      <div class="overlay">
+        <div class="overlay-panel overlay-left">
+
+          <el-image :src="require('../assets/logo.png')" class="logo"></el-image>
+          <p>与我们一起开黑，请使用您的个人信息登录</p>
+          <button class="ghost" id="signIn" @click="changeType(true)">登录</button>
         </div>
-        <!-- 左右浮动提示文字部分 -->
-        <div class="small-box" :class="{active:isLogin}">
-          <div class="small-contain" key="smallContainRegister" v-if="isLogin">
-            <img src="../assets/logo.png" width="200px" height="75px"/>
-            <p class="scontent">开始注册，和我们一起开黑</p>
-            <button class="sbutton" @click="changeType">注册</button>
-          </div>
-          <div class="small-contain" key="smallContainLogin" v-else>
-						<img src="../assets/logo.png" width="200px" height="75px"/>
-            <p class="scontent">与我们保持联系，请登录你的账户</p>
-            <button class="sbutton" @click="changeType">登录</button>
-          </div>
+
+        <div class="overlay-panel overlay-right">
+          <el-image :src="require('../assets/logo.png')" class="logo"></el-image>
+          <p>输入您的个人详细信息，与我们一起开黑！</p>
+          <button class="ghost" id="signUp" @click = "changeType(false)">注册</button>
         </div>
       </div>
     </div>
+  </div>
+  <!-- 页脚 -->
+  <footer>
+    <p>
+      梦里寻他，踏马而来，寻找最强战队！
+    </p>
+  </footer>
   </div>
 </template>
 
@@ -75,21 +102,25 @@ export default {
   name: 'login-register',
   data() {
     return {
-      isLogin: false,
+      // 登录验证
       emailError: false,
       passwordError: false,
-      existed: false,
-      passExisted: false,
+      // 注册唯一性验证
+      emailExisted: false,
+      // TODO 不知道干啥的，问李优确认
       newSign: false,
+      // 用户表单
       form: {
-        username: '',
-        useremail: '',
-        userpwd: '',
-        rankLevel: '',
-        occupation: ''
-
+        userName: '',
+        userEmail: '',
+        userPwd: '',
+        currentRankLevel: '',
+        bestRankLevel : '',
+        priorityPosition : '',
+        secondaryPosition : ''
       },
-      options: [{
+
+      rankLevelOptions: [{
         value: '9',
         label: '钻石及以上'
       }, {
@@ -106,7 +137,7 @@ export default {
         label: '青铜及以下'
       }],
 
-      occupation: [{
+      occupationOptions: [{
         value: 'Top',
         label: '上单'
       }, {
@@ -125,16 +156,22 @@ export default {
     }
   },
   methods: {
-    changeType() {
-      this.isLogin = !this.isLogin
-      this.form.username = ''
-      this.form.useremail = ''
-      this.form.userpwd = ''
-      this.existed = false;
-      this.passExisted = false;
+    changeType(paramType) {
+      // 横幅展示画面注册和登录按钮切换
+      const container = document.getElementById('container');
+      paramType ? container.classList.remove("right-panel-active") : container.classList.add("right-panel-active");
+      // 初始化数据
+      this.form = [];
+      this.emailError = false;
+      this.passwordError = false;
+      // 注册请求时，email唯一性验证
+      this.emailExisted = false;
     },
 
+    // 帐号登录
     login() {
+      console.log("123132213");
+      debugger
       const self = this;
       if (self.form.useremail != "" && self.form.userpwd != "") {
         self.$axios({
@@ -155,9 +192,11 @@ export default {
               }
               break;
             case -1:
+              // TODO 用户不存在，即邮箱填写错误
               this.emailError = true;
               break;
             case 1:
+              // TODO 用户名正确，密码错误
               this.passwordError = true;
               break;
           }
@@ -165,13 +204,9 @@ export default {
         .catch(err => {
           console.log(err);
         })
-      } else {
-        alert("填写不能为空！");
       }
     },
     register() {
-      this.existed = false;
-      this.passExisted = false;
       const self = this;
       if (self.form.username != "" && self.form.userpwd != "") {
         self.$axios({
@@ -181,7 +216,7 @@ export default {
             username: self.form.username,
             password: self.form.userpwd,
             email: self.form.useremail,
-            rankLevel: self.form.rankLevel,
+            currentRankLevel: self.form.currentRankLevel,
             occupation: self.form.occupation
           }
         })
@@ -193,7 +228,7 @@ export default {
               this.login();
               break;
             case -1:
-              this.existed = true;
+              this.emailExisted = true;
               this.form.username = '';
               this.$message.error("用户名已存在，请重新输入!")
               break;
@@ -202,228 +237,12 @@ export default {
         .catch(err => {
           console.log(err);
         })
-      } else {
-        if (self.form.username === "" && self.form.userpwd === "") {
-          this.existed = true;
-          this.passExisted = true;
-          this.$message.error("用户名和密码不能为空！");
-        } else if (self.form.username === "") {
-          this.existed = true;
-          this.$message.error("用户名不能为空！");
-        } else if (self.form.userpwd === "") {
-          this.passExisted = true;
-          this.$message.error("密码不能为空！");
-        }
       }
     }
   }
 }
 </script>
 
-<style scoped="scoped">
-
-#building {
-  background-image: url("../assets/Background.jpg");
-  width: 100%;
-  height: 100%;
-  position: fixed;
-  background-size: 100% 100%;
-}
-
-.login-register {
-  width: 100vw;
-  height: 100vh;
-  box-sizing: border-box;
-}
-
-.contain {
-  width: 60%;
-  height: 60%;
-  position: relative;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: #FFFFFF;
-
-  border-radius: 20px;
-  box-shadow: 0 0 3px #f0f0f0,
-  0 0 6px #f0f0f0;
-}
-
-.big-box {
-  width: 70%;
-  height: 100%;
-  position: absolute;
-  top: 0;
-  left: 30%;
-  transform: translateX(0%);
-  transition: all 1s;
-}
-
-.big-contain {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.btitle {
-  font-size: 1.5em;
-  font-weight: bold;
-  color: rgb(57, 167, 176);
-}
-
-.bform {
-  width: 100%;
-  height: 40%;
-  padding: 2em 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  align-items: center;
-}
-
-.bform .el-input {
-  border-radius: 4px;
-  width: 50%;
-  height: 50px;
-  border: none;
-  outline: none;
-}
-
-.bform .errTips {
-  display: block;
-  width: 50%;
-  text-align: left;
-  color: red;
-  font-size: 0.7em;
-  margin-left: 1em;
-}
-
-.lform {
-  width: 100%;
-  height: 40%;
-  padding: 2em 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  align-items: center;
-}
-
-.lform .el-input {
-  border-radius: 4px;
-  width: 50%;
-  height: 50px;
-  border: none;
-  outline: none;
-}
-
-/* .lform .el-select {
-  border-radius: 4px;
-  width: 50%;
-  height: 50px;
-  border: none;
-  outline: none;
-} */
-
-/* error状态输入框框体变红*/
-/* .lform .empty{
-border: red 1px solid;
-} */
-
-/* error状态 placeholder字体变红*/
-.empty /deep/ input::-webkit-input-placeholder {
-  -webkit-text-fill-color: red;
-}
-
-/* error状态输入框框体变红*/
-/* .lform .passEmpty{
-border: red 1px solid;
-}  */
-
-/* error状态 placeholder字体变红*/
-.passEmpty /deep/ input::-webkit-input-placeholder {
-  -webkit-text-fill-color: red;
-}
-
-.bbutton {
-  width: 20%;
-  height: 40px;
-  border-radius: 24px;
-  border: none;
-  outline: none;
-  background-color: rgb(57, 167, 176);
-  color: #fff;
-  font-size: 0.9em;
-  cursor: pointer;
-}
-
-.small-box {
-  width: 30%;
-  height: 100%;
-  background: linear-gradient(135deg, rgb(57, 167, 176), rgb(56, 183, 145));
-  position: absolute;
-  top: 0;
-  left: 0;
-  transform: translateX(0%);
-  transition: all 1s;
-  border-top-left-radius: inherit;
-  border-bottom-left-radius: inherit;
-}
-
-.small-contain {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.stitle {
-  font-size: 1.5em;
-  font-weight: bold;
-  color: #fff;
-}
-
-.scontent {
-  font-size: 0.8em;
-  color: #fff;
-  text-align: center;
-  padding: 2em 4em;
-  line-height: 1.7em;
-}
-
-.sbutton {
-  width: 60%;
-  height: 40px;
-  border-radius: 24px;
-  border: 1px solid #fff;
-  outline: none;
-  background-color: transparent;
-  color: #fff;
-  font-size: 0.9em;
-  cursor: pointer;
-}
-
-.big-box.active {
-  left: 0;
-  transition: all 0.5s;
-}
-
-.small-box.active {
-  left: 100%;
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
-  border-top-right-radius: inherit;
-  border-bottom-right-radius: inherit;
-  transform: translateX(-100%);
-  transition: all 1s;
-}
-
-.empty {
-  border: red 1px solid;
-}
+<style scoped>
+  @import '../assets/css/login.css';
 </style>
