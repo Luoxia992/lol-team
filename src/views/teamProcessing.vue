@@ -71,30 +71,71 @@
             </el-button>
           </el-row>
         </el-row>
-        <!-- 分组结果部分 -->
-        <el-row style="margin: 2%">
+
+        <el-row>
           <el-col :span="10">
-            <p class="teamTitle" style="color: #f56c6c">红队</p>
-            <el-card class="red-card" body-style="height:220px;">
-              <div v-for="(item, index) in blueteam" :key="index" class="text item">
-                {{ item.userName }}
-              </div>
-            </el-card>
-          </el-col>
-          <el-col
-            :span="4"
-            style="font-size: 200px; text-align: center; height: 300px; line-height: 300px"
-          >
-            <p>vs</p>
+            <el-table
+              :data="tableData"
+              stripe
+              border
+              height="350"
+              style="width: 90%; margin: 4%"
+              :header-cell-style="{ background: '#F56C6C', color: '#FFFFFF' }"
+              :cell-style="cellStyleRed"
+            >
+              <el-table-column prop="userName" label="召唤师姓名"></el-table-column>
+              <el-table-column prop="rankLevel" label="近10场KDA"></el-table-column>
+              <el-table-column prop="rankLevel" label="近10场胜率"></el-table-column>
+              <el-table-column prop="rankLevel" label="段位">
+                <template slot-scope="scope">
+                  <span v-if="scope.row.rankLevel == 1">黑铁</span>
+                  <span v-if="scope.row.rankLevel == 2">青铜</span>
+                  <span v-if="scope.row.rankLevel == 3">白银</span>
+                  <span v-if="scope.row.rankLevel == 4">黄金</span>
+                  <span v-if="scope.row.rankLevel == 6">白金</span>
+                  <span v-if="scope.row.rankLevel == 7">钻石</span>
+                  <span v-if="scope.row.rankLevel == 8">大师</span>
+                  <span v-if="scope.row.rankLevel == 9">王者</span>
+                </template>
+              </el-table-column>
+            </el-table>
           </el-col>
 
-          <el-col :span="10">
-            <p class="teamTitle" style="color: #409eff">蓝队</p>
-            <el-card class="blue-card" body-style="height:220px;">
-              <div v-for="(item, index) in redteam" :key="index" class="text item">
-                {{ item.userName }}
-              </div>
-            </el-card>
+          <el-col :span="10" offset="4" stripe>
+            <el-table
+              :data="tableData"
+              stripe
+              border
+              height="350"
+              style="width: 90%; margin: 4%"
+              :header-cell-style="{ background: '#409EFF', color: '#FFFFFF' }"
+              :cell-style="cellStyleBlue"
+            >
+              <el-table-column prop="userName" label="召唤师姓名"></el-table-column>
+              <el-table-column prop="rankLevel" label="近10场KDA"></el-table-column>
+              <el-table-column prop="rankLevel" label="近10场胜率"></el-table-column>
+              <el-table-column prop="rankLevel" label="段位">
+                <template slot-scope="scope">
+                  <span v-if="scope.row.rankLevel == 1">黑铁</span>
+                  <span v-if="scope.row.rankLevel == 2">青铜</span>
+                  <span v-if="scope.row.rankLevel == 3">白银</span>
+                  <span v-if="scope.row.rankLevel == 4">黄金</span>
+                  <span v-if="scope.row.rankLevel == 6">白金</span>
+                  <span v-if="scope.row.rankLevel == 7">钻石</span>
+                  <span v-if="scope.row.rankLevel == 8">大师</span>
+                  <span v-if="scope.row.rankLevel == 9">王者</span>
+                </template>
+              </el-table-column>
+              <el-table-column prop="occupation" label="擅长位置">
+                <template slot-scope="scope">
+                  <span v-if="scope.row.occupation == 'Top'">上单</span>
+                  <span v-if="scope.row.occupation == 'Mid'">中单</span>
+                  <span v-if="scope.row.occupation == 'Jug'">打野</span>
+                  <span v-if="scope.row.occupation == 'ADC'">ADC</span>
+                  <span v-if="scope.row.occupation == 'Sup'">辅助</span>
+                </template>
+              </el-table-column>
+            </el-table>
           </el-col>
         </el-row>
       </el-row>
@@ -167,6 +208,14 @@ export default {
       if (key == 6) {
         this.$router.go(-1);
       }
+    },
+
+    // table颜色修改
+    cellStyleRed({ row, column, rowIndex, columnIndex }) {
+      return 'font-weight:700;color:#F56C6C ';
+    },
+    cellStyleBlue({ row, column, rowIndex, columnIndex }) {
+      return 'font-weight:700;color:#409EFF ';
     },
 
     startMatch() {
@@ -277,5 +326,14 @@ export default {
 
 .el-carousel__item:nth-child(2n + 1) {
   background-color: #d3dce6;
+}
+
+/* 实力颜色提示 */
+.el-table .warning-row {
+  background: oldlace;
+}
+
+.el-table .success-row {
+  background: #f0f9eb;
 }
 </style>
