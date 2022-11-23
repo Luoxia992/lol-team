@@ -6,7 +6,7 @@
       <form action="#">
         <h1>注册您的账户</h1>
         <input type="text" required="required" v-model="form.userName" placeholder="游戏昵称" />
-        <input type="email" required="required" v-model="form.useEemail" placeholder="邮箱" />
+        <input type="email" required="required" v-model="form.useEmail" placeholder="邮箱" />
         <input type="password" required="required" v-model="form.userPwd" placeholder="密码" />
 
         <el-row>
@@ -54,7 +54,7 @@
           </el-col>
         </el-row>
 
-        <button style="margin: 20px 0;">注册</button>
+        <button style="margin: 20px 0;" @click="register">注册</button>
       </form>
     </div>
 
@@ -213,11 +213,15 @@ export default {
           method: 'post',
           url: 'http://127.0.0.1:10520/api/user/add',
           data: {
-            username: self.form.username,
-            password: self.form.userpwd,
-            email: self.form.useremail,
+            username: self.form.userName,
+            password: self.form.userPwd,
+            email: self.form.useEmail,
             currentRankLevel: self.form.currentRankLevel,
-            occupation: self.form.occupation
+            occupation: self.form.occupation,
+            currentRankLevel: self.form.currentRankLevel,
+            bestRankLevel: self.form.bestRankLevel,
+            priorityPosition: self.form.priorityPosition,
+            secondaryPosition: self.form.secondaryPosition
           }
         })
         .then(res => {

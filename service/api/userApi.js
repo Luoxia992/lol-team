@@ -47,7 +47,18 @@ router.post('/add', (req, res) => {
 					console.log(err);
 				} else{
 					console.log(rst);
-					res.send("0"); // 0 表示用户创建成功
+					const sql = $sql.user.select + " where username = '" + params.username + "'";
+					conn.query(sql, params.username, (error, results) => {
+						const userId = results[0].userId;
+						const userInfoInsertSql = $sql.userGameInfo.insert;
+						conn.query(userInfoInsertSql, [userId, params.username,params.currentRankLevel,params.bestRankLevel,params.priorityPosition,params.secondaryPosition], (err, rst) => {
+							if (err) {
+								console.log(err);
+							} else{
+								res.send("0"); // 0 表示用户创建成功
+							}
+						});
+					});
 				}
 			});
 		}
