@@ -28,6 +28,37 @@ CREATE TABLE `user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 ```
 
+```
+CREATE TABLE
+    userKDAInfo
+    (
+        userGameId INT NOT NULL AUTO_INCREMENT,
+        userId INT NOT NULL,
+        username VARCHAR(40) NOT NULL,
+        game_Create_Date DATETIME,
+        currentGameKill INT,
+        currentGameAssist INT,
+        currentGameDead INT,
+        currentGameKda decimal(20,1) GENERATED ALWAYS AS ((currentGameKill + currentGameAssist)/(if(currentGameDead > 0 ,currentGameDead,1))),
+        PRIMARY KEY (userGameId,userId)
+    )
+    ENGINE=InnoDB DEFAULT CHARSET=latin1;
+```
+
+```
+CREATE TABLE
+    usergameinfo
+    (
+        userId INT NOT NULL,
+        username VARCHAR(40) NOT NULL,
+        currentRankLevel VARCHAR(2) NOT NULL,
+        bestRankLevel VARCHAR(2) NOT NULL,
+        priorityPosition VARCHAR(3) NOT NULL,
+        secondaryPosition VARCHAR(3) NOT NULL,
+        PRIMARY KEY (userId)
+    )
+    ENGINE=InnoDB DEFAULT CHARSET=latin1;
+```
 
 ### 项目初始化
 ```
