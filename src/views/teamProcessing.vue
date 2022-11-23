@@ -40,9 +40,12 @@
             v-if="viewId === 'teamCenter'"
             @selection-change="handleSelectionChange"
           >
-            <el-table-column type="selection" width="55"> </el-table-column>
-            <el-table-column prop="userName" label="召唤师姓名" width="180">
-            </el-table-column>
+            <el-table-column type="selection" width="55"></el-table-column>
+            <el-table-column
+              prop="userName"
+              label="召唤师姓名"
+              width="180"
+            ></el-table-column>
             <el-table-column prop="rankLevel" label="段位" width="180">
               <template slot-scope="scope">
                 <span v-if="scope.row.rankLevel == 1">黑铁</span>
@@ -137,8 +140,8 @@ export default {
       // 欢迎画面，开发文档开关
       welcomeScreen: true,
       // 页码标识
-      viewId: "",
-      loginEmail: "",
+      viewId: '',
+      loginEmail: '',
       // 用于选择的所有用户表单显示
       tableData: [],
       // 被选中的用户组
@@ -155,13 +158,13 @@ export default {
       this.welcomeScreen = false;
       // 组队中心
       if (key == 1) {
-        this.viewId = "teamCenter";
+        this.viewId = 'teamCenter';
         // 获取数据库内所有用户数据
         const self = this;
         self
           .$axios({
-            method: "get",
-            url: "http://127.0.0.1:10520/api/user/selectAllUser",
+            method: 'get',
+            url: 'http://127.0.0.1:10520/api/user/selectAllUser',
           })
           .then((res) => {
             this.tableData = res.data;
@@ -169,15 +172,15 @@ export default {
       }
       // 开黑语音
       if (key == 2) {
-        this.viewId = "voice";
+        this.viewId = 'voice';
       }
       // 战绩查询
       if (key == 3) {
-        this.viewId = "voice";
+        this.viewId = 'voice';
       }
       // 消息中心
       if (key == 4) {
-        this.viewId = "voice";
+        this.viewId = 'voice';
       }
       // 个人中心
       if (key == 5) {
@@ -190,7 +193,7 @@ export default {
 
     startMatch() {
       if (this.multipleSelection.length != 10) {
-        this.$message.error("请选择十名勇士！！！");
+        this.$message.error('请选择十名勇士！！！');
         return;
       }
       this.blueteam = [];
@@ -203,14 +206,14 @@ export default {
         tempSortTeam[9],
         tempSortTeam[3],
         tempSortTeam[6],
-        tempSortTeam[5]
+        tempSortTeam[5],
       );
       this.redteam.push(
         tempSortTeam[1],
         tempSortTeam[8],
         tempSortTeam[2],
         tempSortTeam[7],
-        tempSortTeam[4]
+        tempSortTeam[4],
       );
     },
     // 格式化段位显示名称

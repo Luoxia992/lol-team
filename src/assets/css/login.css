@@ -1,7 +1,7 @@
 * {
   box-sizing: border-box;
-  font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB",
-    "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+  font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB',
+    'Microsoft YaHei', '微软雅黑', Arial, sans-serif;
 }
 
 .center {
@@ -10,10 +10,10 @@
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  font-family: "Montserrat", sans-serif;
+  font-family: 'Montserrat', sans-serif;
   height: 100vh;
   margin: -20px 0 50px;
-  background-image: url("../Background.jpg");
+  background-image: url('../Background.jpg');
 }
 
 h1 {

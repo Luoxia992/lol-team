@@ -32,8 +32,7 @@
                   :key="item.value"
                   :label="item.label"
                   :value="item.value"
-                >
-                </el-option>
+                ></el-option>
               </el-select>
             </el-col>
             <el-col :span="11" :offset="2">
@@ -43,8 +42,7 @@
                   :key="item.value"
                   :label="item.label"
                   :value="item.value"
-                >
-                </el-option>
+                ></el-option>
               </el-select>
             </el-col>
           </el-row>
@@ -56,8 +54,7 @@
                   :key="item.value"
                   :label="item.label"
                   :value="item.value"
-                >
-                </el-option>
+                ></el-option>
               </el-select>
             </el-col>
             <el-col :span="11" :offset="2">
@@ -70,8 +67,7 @@
                   :key="item.value"
                   :label="item.label"
                   :value="item.value"
-                >
-                </el-option>
+                ></el-option>
               </el-select>
             </el-col>
           </el-row>
@@ -92,9 +88,9 @@
           />
           <span class="errTips" v-if="emailError">* 邮箱填写错误 *</span>
           <input type="password" v-model="form.userpwd" placeholder="密码" />
-          <span class="errTips" required="required" v-if="passwordError"
-            >* 密码填写错误 *</span
-          >
+          <span class="errTips" required="required" v-if="passwordError">
+            * 密码填写错误 *
+          </span>
           <a href="#">忘记了您的密码?</a>
           <button @click="login">登录</button>
         </form>
@@ -135,7 +131,7 @@
 
 <script>
 export default {
-  name: "login-register",
+  name: 'login-register',
   data() {
     return {
       // 登录验证
@@ -147,58 +143,58 @@ export default {
       newSign: false,
       // 用户表单
       form: {
-        userName: "",
-        userEmail: "",
-        userPwd: "",
-        currentRankLevel: "",
-        bestRankLevel: "",
-        priorityPosition: "",
-        secondaryPosition: "",
+        userName: '',
+        userEmail: '',
+        userPwd: '',
+        currentRankLevel: '',
+        bestRankLevel: '',
+        priorityPosition: '',
+        secondaryPosition: '',
       },
 
       rankLevelOptions: [
         {
-          value: "9",
-          label: "钻石及以上",
+          value: '9',
+          label: '钻石及以上',
         },
         {
-          value: "8",
-          label: "白金",
+          value: '8',
+          label: '白金',
         },
         {
-          value: "6",
-          label: "黄金",
+          value: '6',
+          label: '黄金',
         },
         {
-          value: "4",
-          label: "白银",
+          value: '4',
+          label: '白银',
         },
         {
-          value: "2",
-          label: "青铜及以下",
+          value: '2',
+          label: '青铜及以下',
         },
       ],
 
       occupationOptions: [
         {
-          value: "Top",
-          label: "上单",
+          value: 'Top',
+          label: '上单',
         },
         {
-          value: "Mid",
-          label: "中单",
+          value: 'Mid',
+          label: '中单',
         },
         {
-          value: "Jug",
-          label: "打野",
+          value: 'Jug',
+          label: '打野',
         },
         {
-          value: "ADC",
-          label: "ADC",
+          value: 'ADC',
+          label: 'ADC',
         },
         {
-          value: "Sup",
-          label: "辅助",
+          value: 'Sup',
+          label: '辅助',
         },
       ],
     };
@@ -206,10 +202,10 @@ export default {
   methods: {
     changeType(paramType) {
       // 横幅展示画面注册和登录按钮切换
-      const container = document.getElementById("container");
+      const container = document.getElementById('container');
       paramType
-        ? container.classList.remove("right-panel-active")
-        : container.classList.add("right-panel-active");
+        ? container.classList.remove('right-panel-active')
+        : container.classList.add('right-panel-active');
       // 初始化数据
       this.form = [];
       this.emailError = false;
@@ -220,14 +216,14 @@ export default {
 
     // 帐号登录
     login() {
-      console.log("123132213");
+      console.log('123132213');
       debugger;
       const self = this;
-      if (self.form.useremail != "" && self.form.userpwd != "") {
+      if (self.form.useremail != '' && self.form.userpwd != '') {
         self
           .$axios({
-            method: "post",
-            url: "http://127.0.0.1:10520/api/user/login",
+            method: 'post',
+            url: 'http://127.0.0.1:10520/api/user/login',
             data: {
               email: self.form.useremail,
               password: self.form.userpwd,
@@ -238,11 +234,11 @@ export default {
               case 0:
                 const param = self.form.useremail;
                 this.$router.push({
-                  path: "/organizeteam",
+                  path: '/organizeteam',
                   query: { email: param },
                 });
                 if (!self.newSign) {
-                  this.$message.success("登陆成功！");
+                  this.$message.success('登陆成功！');
                 }
                 break;
               case -1:
@@ -262,11 +258,11 @@ export default {
     },
     register() {
       const self = this;
-      if (self.form.username != "" && self.form.userpwd != "") {
+      if (self.form.username != '' && self.form.userpwd != '') {
         self
           .$axios({
-            method: "post",
-            url: "http://127.0.0.1:10520/api/user/add",
+            method: 'post',
+            url: 'http://127.0.0.1:10520/api/user/add',
             data: {
               username: self.form.userName,
               password: self.form.userPwd,
@@ -282,14 +278,14 @@ export default {
           .then((res) => {
             switch (res.data) {
               case 0:
-                this.$message.success("注册成功！");
+                this.$message.success('注册成功！');
                 this.newSign = true;
                 this.login();
                 break;
               case -1:
                 this.emailExisted = true;
-                this.form.username = "";
-                this.$message.error("用户名已存在，请重新输入!");
+                this.form.username = '';
+                this.$message.error('用户名已存在，请重新输入!');
                 break;
             }
           })
@@ -303,5 +299,5 @@ export default {
 </script>
 
 <style scoped>
-@import "../assets/css/login.css";
+@import '../assets/css/login.css';
 </style>

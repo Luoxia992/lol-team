@@ -31,7 +31,7 @@
             </div>
             <div class="user_qianming">
               休息嘻嘻嘻嘻嘻嘻
-              <span> {{ design }}</span>
+              <span>{{ design }}</span>
             </div>
             <div class="user_anniu">
               <el-button
@@ -40,7 +40,8 @@
                 size="small"
                 plain
                 @click="edit"
-                >编辑
+              >
+                编辑
               </el-button>
               <el-button
                 v-show="!userNameEdit"
@@ -73,9 +74,9 @@
         <div class="person_body_left">
           <el-card class="box-card" :body-style="{ padding: '0px' }">
             <div slot="header" class="clearfix">
-              <span class="person_body_list" style="border-bottom: none"
-                >个人中心</span
-              >
+              <span class="person_body_list" style="border-bottom: none">
+                个人中心
+              </span>
             </div>
             <el-menu
               router
@@ -129,15 +130,15 @@
 </template>
 
 <script>
-import multiavatar from "@multiavatar/multiavatar";
+import multiavatar from '@multiavatar/multiavatar';
 
 export default {
-  name: "dialogComponent",
+  name: 'dialogComponent',
   data() {
     return {
-      avatar: "",
-      userId: "",
-      loginEmail: "",
+      avatar: '',
+      userId: '',
+      loginEmail: '',
       watch: {},
       userNameEdit: false,
       detailVisible: false,
@@ -152,7 +153,7 @@ export default {
     },
 
     changeInput(value) {
-      console.log("b", value);
+      console.log('b', value);
       this.userId = value;
       this.avatar = multiavatar(value);
     },
@@ -166,8 +167,8 @@ export default {
       const self = this;
       self
         .$axios({
-          method: "post",
-          url: "http://127.0.0.1:10520/api/user/selectUserName",
+          method: 'post',
+          url: 'http://127.0.0.1:10520/api/user/selectUserName',
           data: {
             email: data,
           },
@@ -186,8 +187,8 @@ export default {
       const self = this;
       self
         .$axios({
-          method: "post",
-          url: "http://127.0.0.1:10520/api/user/changeName",
+          method: 'post',
+          url: 'http://127.0.0.1:10520/api/user/changeName',
           data: {
             email: this.loginEmail,
             userName: this.userId,
@@ -197,12 +198,12 @@ export default {
           switch (res.data) {
             case 0:
               if (!self.newSign) {
-                this.$message.success("保存成功！");
+                this.$message.success('保存成功！');
                 this.userNameEdit = true;
               }
               break;
             case -1:
-              this.$message.error("保存失败,请重试！");
+              this.$message.error('保存失败,请重试！');
               break;
           }
         })
