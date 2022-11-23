@@ -41,11 +41,7 @@
             @selection-change="handleSelectionChange"
           >
             <el-table-column type="selection" width="55"></el-table-column>
-            <el-table-column
-              prop="userName"
-              label="召唤师姓名"
-              width="180"
-            ></el-table-column>
+            <el-table-column prop="userName" label="召唤师姓名" width="180"></el-table-column>
             <el-table-column prop="rankLevel" label="段位" width="180">
               <template slot-scope="scope">
                 <span v-if="scope.row.rankLevel == 1">黑铁</span>
@@ -70,12 +66,7 @@
           </el-table>
 
           <el-row style="text-align: center">
-            <el-button
-              type="success"
-              icon="el-icon-trophy"
-              :loading="false"
-              @click="startMatch"
-            >
+            <el-button type="success" icon="el-icon-trophy" :loading="false" @click="startMatch">
               开始战斗
             </el-button>
           </el-row>
@@ -85,23 +76,14 @@
           <el-col :span="10">
             <p class="teamTitle" style="color: #f56c6c">红队</p>
             <el-card class="red-card" body-style="height:220px;">
-              <div
-                v-for="(item, index) in blueteam"
-                :key="index"
-                class="text item"
-              >
+              <div v-for="(item, index) in blueteam" :key="index" class="text item">
                 {{ item.userName }}
               </div>
             </el-card>
           </el-col>
           <el-col
             :span="4"
-            style="
-              font-size: 200px;
-              text-align: center;
-              height: 300px;
-              line-height: 300px;
-            "
+            style="font-size: 200px; text-align: center; height: 300px; line-height: 300px"
           >
             <p>vs</p>
           </el-col>
@@ -109,11 +91,7 @@
           <el-col :span="10">
             <p class="teamTitle" style="color: #409eff">蓝队</p>
             <el-card class="blue-card" body-style="height:220px;">
-              <div
-                v-for="(item, index) in redteam"
-                :key="index"
-                class="text item"
-              >
+              <div v-for="(item, index) in redteam" :key="index" class="text item">
                 {{ item.userName }}
               </div>
             </el-card>

@@ -34,22 +34,10 @@
               <span>{{ design }}</span>
             </div>
             <div class="user_anniu">
-              <el-button
-                class="el-icon-edit"
-                type="primary"
-                size="small"
-                plain
-                @click="edit"
-              >
+              <el-button class="el-icon-edit" type="primary" size="small" plain @click="edit">
                 编辑
               </el-button>
-              <el-button
-                v-show="!userNameEdit"
-                type="primary"
-                size="small"
-                plain
-                @click="save"
-              >
+              <el-button v-show="!userNameEdit" type="primary" size="small" plain @click="save">
                 保存
               </el-button>
             </div>
@@ -74,19 +62,10 @@
         <div class="person_body_left">
           <el-card class="box-card" :body-style="{ padding: '0px' }">
             <div slot="header" class="clearfix">
-              <span class="person_body_list" style="border-bottom: none">
-                个人中心
-              </span>
+              <span class="person_body_list" style="border-bottom: none">个人中心</span>
             </div>
-            <el-menu
-              router
-              active-text-color="#00c3ff"
-              class="el-menu-vertical-demo"
-            >
-              <el-menu-item
-                index="info"
-                :route="{ name: 'info', params: $route.params.id }"
-              >
+            <el-menu router active-text-color="#00c3ff" class="el-menu-vertical-demo">
+              <el-menu-item index="info" :route="{ name: 'info', params: $route.params.id }">
                 <i class="el-icon-user"></i>
                 <span slot="title">个人简介</span>
               </el-menu-item>
@@ -104,10 +83,7 @@
                 <i class="el-icon-document"></i>
                 <span slot="title">上次组队</span>
               </el-menu-item>
-              <el-menu-item
-                index="myfan"
-                :route="{ name: 'myfan', params: $route.params.id }"
-              >
+              <el-menu-item index="myfan" :route="{ name: 'myfan', params: $route.params.id }">
                 <i class="el-icon-tableware"></i>
                 <span slot="title">拉黑</span>
               </el-menu-item>

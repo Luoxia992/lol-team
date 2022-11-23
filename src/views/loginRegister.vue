@@ -5,24 +5,9 @@
       <div class="form-container sign-up-container">
         <form action="#">
           <h1>注册您的账户</h1>
-          <input
-            type="text"
-            required="required"
-            v-model="form.userName"
-            placeholder="游戏昵称"
-          />
-          <input
-            type="email"
-            required="required"
-            v-model="form.useEmail"
-            placeholder="邮箱"
-          />
-          <input
-            type="password"
-            required="required"
-            v-model="form.userPwd"
-            placeholder="密码"
-          />
+          <input type="text" required="required" v-model="form.userName" placeholder="游戏昵称" />
+          <input type="email" required="required" v-model="form.useEmail" placeholder="邮箱" />
+          <input type="password" required="required" v-model="form.userPwd" placeholder="密码" />
 
           <el-row>
             <el-col :span="11">
@@ -58,10 +43,7 @@
               </el-select>
             </el-col>
             <el-col :span="11" :offset="2">
-              <el-select
-                v-model="form.secondaryPosition"
-                placeholder="次选位置"
-              >
+              <el-select v-model="form.secondaryPosition" placeholder="次选位置">
                 <el-option
                   v-for="item in occupationOptions"
                   :key="item.value"
@@ -80,17 +62,10 @@
       <div class="form-container sign-in-container">
         <form action="#" prop="register">
           <h1>登录</h1>
-          <input
-            type="email"
-            required="required"
-            v-model="form.useremail"
-            placeholder="邮箱"
-          />
+          <input type="email" required="required" v-model="form.useremail" placeholder="邮箱" />
           <span class="errTips" v-if="emailError">* 邮箱填写错误 *</span>
           <input type="password" v-model="form.userpwd" placeholder="密码" />
-          <span class="errTips" required="required" v-if="passwordError">
-            * 密码填写错误 *
-          </span>
+          <span class="errTips" required="required" v-if="passwordError">* 密码填写错误 *</span>
           <a href="#">忘记了您的密码?</a>
           <button @click="login">登录</button>
         </form>
@@ -99,25 +74,15 @@
       <div class="overlay-container">
         <div class="overlay">
           <div class="overlay-panel overlay-left">
-            <el-image
-              :src="require('../assets/logo.png')"
-              class="logo"
-            ></el-image>
+            <el-image :src="require('../assets/logo.png')" class="logo"></el-image>
             <p>与我们一起开黑，请使用您的个人信息登录</p>
-            <button class="ghost" id="signIn" @click="changeType(true)">
-              登录
-            </button>
+            <button class="ghost" id="signIn" @click="changeType(true)">登录</button>
           </div>
 
           <div class="overlay-panel overlay-right">
-            <el-image
-              :src="require('../assets/logo.png')"
-              class="logo"
-            ></el-image>
+            <el-image :src="require('../assets/logo.png')" class="logo"></el-image>
             <p>输入您的个人详细信息，与我们一起开黑！</p>
-            <button class="ghost" id="signUp" @click="changeType(false)">
-              注册
-            </button>
+            <button class="ghost" id="signUp" @click="changeType(false)">注册</button>
           </div>
         </div>
       </div>

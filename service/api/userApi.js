@@ -20,10 +20,7 @@ router.post('/login', (req, res) => {
     if (results[0] === undefined) {
       res.send('-1'); // -1 表示查询不到，用户不存在，即邮箱填写错误
     } else {
-      if (
-        results[0].email == user.email &&
-        results[0].password == user.password
-      ) {
+      if (results[0].email == user.email && results[0].password == user.password) {
         res.send('0'); // 0 表示用户存在并且邮箱密码正确
       } else {
         res.send('1'); // 1 表示用户存在，但密码不正确
@@ -35,8 +32,7 @@ router.post('/login', (req, res) => {
 // 注册接口
 router.post('/add', (req, res) => {
   const params = req.body;
-  const sel_sql =
-    $sql.user.select + " where username = '" + params.username + "'";
+  const sel_sql = $sql.user.select + " where username = '" + params.username + "'";
   const add_sql = $sql.user.add;
   console.log(sel_sql);
   conn.query(sel_sql, params.username, (error, results) => {
@@ -48,20 +44,13 @@ router.post('/add', (req, res) => {
     } else {
       conn.query(
         add_sql,
-        [
-          params.username,
-          params.password,
-          params.email,
-          params.rankLevel,
-          params.occupation,
-        ],
+        [params.username, params.password, params.email, params.rankLevel, params.occupation],
         (err, rst) => {
           if (err) {
             console.log(err);
           } else {
             console.log(rst);
-            const sql =
-              $sql.user.select + " where username = '" + params.username + "'";
+            const sql = $sql.user.select + " where username = '" + params.username + "'";
             conn.query(sql, params.username, (error, results) => {
               const userId = results[0].userId;
               const userInfoInsertSql = $sql.userGameInfo.insert;
