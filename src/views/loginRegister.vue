@@ -28,10 +28,12 @@
           >
             <el-input
               type="email"
-              prop="userEmail"
+              :class="{ emailEmpty: existed }"
               v-model="form.userEmail"
               placeholder="邮箱"
               style="width: 282px"
+              :validate-event="false"
+              :placeholder="emailPlaceholder"
             />
           </el-form-item>
           <!-- <el-form-item prop = "userPwd"> -->
@@ -83,7 +85,7 @@
             </el-col>
           </el-row>
 
-          <button style="margin: 20px 0" @click="register">注册</button>
+          <button style="margin: 20px 0" @click="register('form')">注册</button>
         </el-form>
       </div>
 
@@ -141,13 +143,13 @@ export default {
       isValid: true,
       // 控制placeholder 样式
       existed: false,
+      //用户名必须输入校验信息
       userNameError: '',
+      //用户邮箱必须输入校验信息
+      userEmailError: '',
       rules: {
         userName: [{ required: true, message: '请输入用户名' }, { validator: validateNecessary }],
-        userEmail: [
-          { required: true, message: '请输入邮箱', trigger: 'blur' },
-          { validator: validateEMail, trigger: 'blur' },
-        ],
+        userEmail: [{ required: true, message: '请输入邮箱' }, { validator: validateEMail }],
         userPwd: [
           { required: true, message: '请输入密码', trigger: 'blur' },
           { validator: isPassword, trigger: 'blur' },
@@ -215,6 +217,9 @@ export default {
     vpcPlaceholder() {
       return this.isValid ? '请输入游戏昵称' : this.userNameError;
     },
+    emailPlaceholder() {
+      return this.isValid ? '请输入邮箱' : this.userEmailError;
+    },
   },
   methods: {
     changeType(paramType) {
@@ -270,10 +275,9 @@ export default {
           });
       }
     },
-    register() {
+    register(formName) {
       const self = this;
-
-      this.$refs['form'].validate((valid) => {
+      this.$refs[formName].validate((valid) => {
         if (valid) {
           self
             .$axios({
@@ -309,11 +313,23 @@ export default {
               console.log(err);
             });
         } else {
+          //设定form校验是否存在error
           self.isValid = false;
+          //设定input框字体变红flg
           self.existed = true;
+          const errorLength = document.getElementsByClassName('el-form-item__error').length;
+
+          //获取validate的信息
           self.userNameError = document.getElementsByClassName('el-form-item__error')[0].innerText;
-          document.getElementsByClassName('el-form-item__error')[0].innerText = '';
-          document.getElementsByClassName('el-form-item__error')[1].innerText = '';
+          self.userEmailError = document.getElementsByClassName('el-form-item__error')[1].innerText;
+          //清空下方el-form自带的message信息
+          self.$refs[formName].clearValidate();
+          self.formName = {};
+
+          // //清空下方el-form自带的message信息
+          // document.getElementsByClassName('el-form-item__error')[0].innerText = '';
+          // //清空下方el-form自带的message信息
+          // document.getElementsByClassName('el-form-item__error')[1].innerText = '';
         }
       });
     },
@@ -326,6 +342,10 @@ export default {
 
 /* error状态 placeholder字体变红*/
 .empty /deep/ input::-webkit-input-placeholder {
+  -webkit-text-fill-color: red;
+}
+
+.emailEmpty /deep/ input::-webkit-input-placeholder {
   -webkit-text-fill-color: red;
 }
 </style>
