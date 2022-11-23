@@ -3,11 +3,40 @@
     <div class="container" id="container">
       <!-- 注册画面部分 -->
       <div class="form-container sign-up-container">
-        <form action="#">
+        <el-form :model="form" :rules="rules" ref="form" action="#" label-width="110px">
           <h1>注册您的账户</h1>
-          <input type="text" required="required" v-model="form.userName" placeholder="游戏昵称" />
-          <input type="email" required="required" v-model="form.useEmail" placeholder="邮箱" />
-          <input type="password" required="required" v-model="form.userPwd" placeholder="密码" />
+          <el-form-item
+            id="gameName"
+            style="margin-bottom: 0px; border-right-width: 50px; margin-right: 110px"
+            prop="userName"
+          >
+            <el-input
+              id="userNameId"
+              class="input"
+              type="text"
+              :class="{ empty: existed }"
+              v-model="form.userName"
+              :validate-event="false"
+              :placeholder="vpcPlaceholder"
+              style="width: 282px"
+            />
+          </el-form-item>
+          <el-form-item
+            id="gameEmail"
+            prop="userEmail"
+            style="margin-bottom: 0px; border-right-width: 50px; margin-right: 110px"
+          >
+            <el-input
+              type="email"
+              prop="userEmail"
+              v-model="form.userEmail"
+              placeholder="邮箱"
+              style="width: 282px"
+            />
+          </el-form-item>
+          <!-- <el-form-item prop = "userPwd"> -->
+          <el-input type="password" prop="userPwd" v-model="form.userPwd" placeholder="密码" />
+          <!-- </el-form-item> -->
 
           <el-row>
             <el-col :span="11">
@@ -55,7 +84,7 @@
           </el-row>
 
           <button style="margin: 20px 0" @click="register">注册</button>
-        </form>
+        </el-form>
       </div>
 
       <!-- 登录画面部分 -->
@@ -95,6 +124,8 @@
 </template>
 
 <script>
+import { validateEMail, isPassword, validateNecessary } from '@/utils/validate';
+
 export default {
   name: 'login-register',
   data() {
@@ -106,6 +137,22 @@ export default {
       emailExisted: false,
       // TODO 不知道干啥的，问李优确认
       newSign: false,
+      // 控制placeholder 文字
+      isValid: true,
+      // 控制placeholder 样式
+      existed: false,
+      userNameError: '',
+      rules: {
+        userName: [{ required: true, message: '请输入用户名' }, { validator: validateNecessary }],
+        userEmail: [
+          { required: true, message: '请输入邮箱', trigger: 'blur' },
+          { validator: validateEMail, trigger: 'blur' },
+        ],
+        userPwd: [
+          { required: true, message: '请输入密码', trigger: 'blur' },
+          { validator: isPassword, trigger: 'blur' },
+        ],
+      },
       // 用户表单
       form: {
         userName: '',
@@ -164,6 +211,11 @@ export default {
       ],
     };
   },
+  computed: {
+    vpcPlaceholder() {
+      return this.isValid ? '请输入游戏昵称' : this.userNameError;
+    },
+  },
   methods: {
     changeType(paramType) {
       // 横幅展示画面注册和登录按钮切换
@@ -198,10 +250,7 @@ export default {
             switch (res.data) {
               case 0:
                 const param = self.form.useremail;
-                this.$router.push({
-                  path: '/organizeteam',
-                  query: { email: param },
-                });
+                this.$router.push({ path: '/organizeteam', query: { email: param } });
                 if (!self.newSign) {
                   this.$message.success('登陆成功！');
                 }
@@ -223,41 +272,50 @@ export default {
     },
     register() {
       const self = this;
-      if (self.form.username != '' && self.form.userpwd != '') {
-        self
-          .$axios({
-            method: 'post',
-            url: 'http://127.0.0.1:10520/api/user/add',
-            data: {
-              username: self.form.userName,
-              password: self.form.userPwd,
-              email: self.form.useEmail,
-              currentRankLevel: self.form.currentRankLevel,
-              occupation: self.form.occupation,
-              currentRankLevel: self.form.currentRankLevel,
-              bestRankLevel: self.form.bestRankLevel,
-              priorityPosition: self.form.priorityPosition,
-              secondaryPosition: self.form.secondaryPosition,
-            },
-          })
-          .then((res) => {
-            switch (res.data) {
-              case 0:
-                this.$message.success('注册成功！');
-                this.newSign = true;
-                this.login();
-                break;
-              case -1:
-                this.emailExisted = true;
-                this.form.username = '';
-                this.$message.error('用户名已存在，请重新输入!');
-                break;
-            }
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      }
+
+      this.$refs['form'].validate((valid) => {
+        if (valid) {
+          self
+            .$axios({
+              method: 'post',
+              url: 'http://127.0.0.1:10520/api/user/add',
+              data: {
+                username: self.form.userName,
+                password: self.form.userPwd,
+                email: self.form.userEmail,
+                currentRankLevel: self.form.currentRankLevel,
+                occupation: self.form.occupation,
+                currentRankLevel: self.form.currentRankLevel,
+                bestRankLevel: self.form.bestRankLevel,
+                priorityPosition: self.form.priorityPosition,
+                secondaryPosition: self.form.secondaryPosition,
+              },
+            })
+            .then((res) => {
+              switch (res.data) {
+                case 0:
+                  this.$message.success('注册成功！');
+                  this.newSign = true;
+                  this.login();
+                  break;
+                case -1:
+                  this.emailExisted = true;
+                  this.form.username = '';
+                  this.$message.error('用户名已存在，请重新输入!');
+                  break;
+              }
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        } else {
+          self.isValid = false;
+          self.existed = true;
+          self.userNameError = document.getElementsByClassName('el-form-item__error')[0].innerText;
+          document.getElementsByClassName('el-form-item__error')[0].innerText = '';
+          document.getElementsByClassName('el-form-item__error')[1].innerText = '';
+        }
+      });
     },
   },
 };
@@ -265,4 +323,9 @@ export default {
 
 <style scoped>
 @import '../assets/css/login.css';
+
+/* error状态 placeholder字体变红*/
+.empty /deep/ input::-webkit-input-placeholder {
+  -webkit-text-fill-color: red;
+}
 </style>
