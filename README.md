@@ -4,18 +4,22 @@
 
 实现登录和注册两个功能，实现全栈，数据记录在数据库，前后端分离
 
-------
-## 推荐IDE
-vscode
-### 插件
-Vue Language Features (Volar)
+---
 
+## 推荐 IDE
+
+vscode
+
+### 插件
+
+Vue Language Features (Volar)
 
 ## 项目部署
 
 ### 数据库
 
 #### 建表语句
+
 ```
 CREATE TABLE `user` (
   `userId` int(11) NOT NULL,
@@ -61,11 +65,13 @@ CREATE TABLE
 ```
 
 ### 项目初始化
+
 ```
 npm install
 ```
 
 ### 后端部署和运行
+
 ```
 cd service
 npm install
@@ -74,10 +80,12 @@ node app.js
 ```
 
 ### 运行前端项目
+
 ```
 npm run serve
 ```
--------
+
+---
 
 ## 使用到的技术
 
@@ -88,7 +96,9 @@ npm run serve
 - vue.js
 - vue-cli
 - vue-router
-#### ui框架：
+
+#### ui 框架：
+
 - elment ui
 
 ### 后端：
@@ -96,4 +106,5 @@ npm run serve
 - node.js
 - express
 - mysql
---------
+
+---
