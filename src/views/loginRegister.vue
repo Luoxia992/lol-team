@@ -104,15 +104,6 @@ export default {
       emailExisted: false,
       // TODO 不知道干啥的，问李优确认
       newSign: false,
-      // 控制placeholder 文字
-      isValid: true,
-      // 控制placeholder 样式
-      existed: false,
-      //用户名必须输入校验信息
-      userNameError: '',
-      //用户邮箱必须输入校验信息
-      userEmailError: '',
-
       // 用户表单
       form: {
         userName: '',
@@ -132,12 +123,12 @@ export default {
         ],
         userPwd: [
           { required: true, message: '请输入密码', trigger: 'blur' },
-          { min: 6, max: 20, message: '长度在 6 到 20 个字符', trigger: ['blur', 'change'] },
+          { pattern: /(?=.*\d)(?=.*[a-zA-Z])(?=.*[^a-zA-Z0-9]).{8,12}/, message: '请至少输入八位数字+字母+符号密码', trigger: ['blur', 'change'] },
         ],
-        currentRankLevel: [{ required: true, message: '请选择当前段位', trigger: 'change' }],
-        bestRankLevel: [{ required: true, message: '请选择最高段位', trigger: 'change' }],
-        priorityPosition: [{ required: true, message: '请选择首选位置', trigger: 'change' }],
-        secondaryPosition: [{ required: true, message: '请选择次选位置', trigger: 'change' }],
+        currentRankLevel: [{ required: true, message: '请选择当前段位', trigger: ['blur', 'change'] }],
+        bestRankLevel: [{ required: true, message: '请选择最高段位', trigger: ['blur', 'change'] }],
+        priorityPosition: [{ required: true, message: '请选择首选位置', trigger: ['blur', 'change'] }],
+        secondaryPosition: [{ required: true, message: '请选择次选位置', trigger: ['blur', 'change'] }],
       },
 
       loginRules: {
