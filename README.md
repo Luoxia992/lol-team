@@ -51,7 +51,7 @@ CREATE TABLE
 
 ```
 CREATE TABLE
-    usergameinfo
+    userGameInfo
     (
         userId INT NOT NULL,
         username VARCHAR(40) NOT NULL,
