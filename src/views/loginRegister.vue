@@ -17,7 +17,7 @@
 
           <el-row>
             <el-col :span="11">
-              <el-form-item prop="currentRankLevel">
+              <el-form-item prop="currentRankLevel" :required="isHaveTo">
                 <el-select v-model="form.currentRankLevel" placeholder="当前段位">
                   <el-option v-for="item in rankLevelOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
                 </el-select>
@@ -96,6 +96,13 @@
 export default {
   name: 'login-register',
   data() {
+    let validateName = (rule, value, callback) => {
+      if ((this.form.currentRankLevel == '' || this.form.currentRankLevel == undefined || this.form.currentRankLevel == null) && this.isHaveTo) {
+        callback(new Error('请输入当前段位'));
+      } else {
+        callback();
+      }
+    };
     return {
       // 登录验证
       emailError: false,
@@ -104,6 +111,8 @@ export default {
       emailExisted: false,
       // TODO 不知道干啥的，问李优确认
       newSign: false,
+      // 解决select验证
+      isShow: false,
       // 用户表单
       form: {
         userName: '',
@@ -125,7 +134,7 @@ export default {
           { required: true, message: '请输入密码', trigger: 'blur' },
           { pattern: /(?=.*\d)(?=.*[a-zA-Z])(?=.*[^a-zA-Z0-9]).{8,12}/, message: '请至少输入八位数字+字母+符号密码', trigger: ['blur', 'change'] },
         ],
-        currentRankLevel: [{ required: true, message: '请选择当前段位', trigger: ['blur', 'change'] }],
+        currentRankLevel: [{ validator: validateName }],
         bestRankLevel: [{ required: true, message: '请选择最高段位', trigger: ['blur', 'change'] }],
         priorityPosition: [{ required: true, message: '请选择首选位置', trigger: ['blur', 'change'] }],
         secondaryPosition: [{ required: true, message: '请选择次选位置', trigger: ['blur', 'change'] }],
@@ -192,6 +201,8 @@ export default {
       const container = document.getElementById('container');
       paramType ? container.classList.remove('right-panel-active') : container.classList.add('right-panel-active');
       // 初始化数据
+      this.$refs['registerForm'].clearValidate();
+      this.isHaveTo = false;
       this.form = {};
       this.emailError = false;
       this.passwordError = false;
@@ -210,14 +221,14 @@ export default {
             method: 'post',
             url: 'http://127.0.0.1:10520/api/user/login',
             data: {
-              email: self.form.useremail,
-              password: self.form.userpwd,
+              email: self.form.userEmail,
+              password: self.form.userPwd,
             },
           })
           .then((res) => {
             switch (res.data) {
               case 0:
-                const param = self.form.useremail;
+                const param = self.form.userEmail;
                 this.$router.push({ path: '/organizeteam', query: { email: param } });
                 if (!self.newSign) {
                   this.$message.success('登陆成功！');
@@ -240,6 +251,8 @@ export default {
     },
     register(formName) {
       const self = this;
+      this.isShow = true;
+
       this.$refs[formName].validate((valid) => {
         if (valid) {
           self
@@ -274,6 +287,7 @@ export default {
               console.log(err);
             });
         } else {
+          this.isShow = true;
           console.log('error submit!!');
           return false;
         }
