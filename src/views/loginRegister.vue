@@ -3,103 +3,70 @@
     <div class="container" id="container">
       <!-- 注册画面部分 -->
       <div class="form-container sign-up-container">
-        <el-form :model="form" :rules="rules" ref="form" action="#" label-width="110px">
+        <el-form action="#" ref="registerForm" :model="form" :rules="registerRules">
           <h1>注册您的账户</h1>
-          <el-form-item
-            id="gameName"
-            style="margin-bottom: 0px; border-right-width: 50px; margin-right: 110px"
-            prop="userName"
-          >
-            <el-input
-              id="userNameId"
-              class="input"
-              type="text"
-              :class="{ empty: existed }"
-              v-model="form.userName"
-              :validate-event="false"
-              :placeholder="vpcPlaceholder"
-              style="width: 282px"
-            />
+          <el-form-item prop="userName">
+            <el-input v-model="form.userName" placeholder="游戏昵称" />
           </el-form-item>
-          <el-form-item
-            id="gameEmail"
-            prop="userEmail"
-            style="margin-bottom: 0px; border-right-width: 50px; margin-right: 110px"
-          >
-            <el-input
-              type="email"
-              :class="{ emailEmpty: existed }"
-              v-model="form.userEmail"
-              placeholder="邮箱"
-              style="width: 282px"
-              :validate-event="false"
-              :placeholder="emailPlaceholder"
-            />
+          <el-form-item prop="userEmail">
+            <el-input v-model="form.userEmail" placeholder="邮箱" />
           </el-form-item>
-          <!-- <el-form-item prop = "userPwd"> -->
-          <el-input type="password" prop="userPwd" v-model="form.userPwd" placeholder="密码" />
-          <!-- </el-form-item> -->
+          <el-form-item prop="userPwd">
+            <el-input type="password" v-model="form.userPwd" placeholder="密码" show-password />
+          </el-form-item>
 
           <el-row>
             <el-col :span="11">
-              <el-select v-model="form.currentRankLevel" placeholder="当前段位">
-                <el-option
-                  v-for="item in rankLevelOptions"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                ></el-option>
-              </el-select>
+              <el-form-item prop="currentRankLevel">
+                <el-select v-model="form.currentRankLevel" placeholder="当前段位">
+                  <el-option v-for="item in rankLevelOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                </el-select>
+              </el-form-item>
             </el-col>
+
             <el-col :span="11" :offset="2">
-              <el-select v-model="form.bestRankLevel" placeholder="最高段位">
-                <el-option
-                  v-for="item in rankLevelOptions"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                ></el-option>
-              </el-select>
-            </el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="11">
-              <el-select v-model="form.priorityPosition" placeholder="首选位置">
-                <el-option
-                  v-for="item in occupationOptions"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                ></el-option>
-              </el-select>
-            </el-col>
-            <el-col :span="11" :offset="2">
-              <el-select v-model="form.secondaryPosition" placeholder="次选位置">
-                <el-option
-                  v-for="item in occupationOptions"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                ></el-option>
-              </el-select>
+              <el-form-item prop="bestRankLevel">
+                <el-select v-model="form.bestRankLevel" placeholder="最高段位">
+                  <el-option v-for="item in rankLevelOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                </el-select>
+              </el-form-item>
             </el-col>
           </el-row>
 
-          <button style="margin: 20px 0" @click="register('form')">注册</button>
+          <el-row>
+            <el-col :span="11">
+              <el-form-item prop="priorityPosition">
+                <el-select v-model="form.priorityPosition" placeholder="首选位置">
+                  <el-option v-for="item in occupationOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                </el-select>
+              </el-form-item>
+            </el-col>
+            <el-col :span="11" :offset="2">
+              <el-form-item prop="secondaryPosition">
+                <el-select v-model="form.secondaryPosition" placeholder="次选位置">
+                  <el-option v-for="item in occupationOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                </el-select>
+              </el-form-item>
+            </el-col>
+          </el-row>
+
+          <button style="margin: 20px 0" @click="register('registerForm')">注册</button>
         </el-form>
       </div>
 
       <!-- 登录画面部分 -->
       <div class="form-container sign-in-container">
-        <form action="#" prop="register">
+        <el-form action="#" ref="loginForm" :model="form" :rules="loginRules">
           <h1>登录</h1>
-          <input type="email" required="required" v-model="form.useremail" placeholder="邮箱" />
-          <span class="errTips" v-if="emailError">* 邮箱填写错误 *</span>
-          <input type="password" v-model="form.userpwd" placeholder="密码" />
-          <span class="errTips" required="required" v-if="passwordError">* 密码填写错误 *</span>
+          <el-form-item prop="userEmail">
+            <el-input type="email" v-model="form.userEmail" placeholder="邮箱" />
+          </el-form-item>
+          <el-form-item prop="userPwd">
+            <el-input type="password" v-model="form.userPwd" placeholder="密码" />
+          </el-form-item>
           <a href="#">忘记了您的密码?</a>
           <button @click="login">登录</button>
-        </form>
+        </el-form>
       </div>
       <!-- 提示横幅部分 -->
       <div class="overlay-container">
@@ -126,8 +93,6 @@
 </template>
 
 <script>
-import { validateEMail, isPassword, validateNecessary } from '@/utils/validate';
-
 export default {
   name: 'login-register',
   data() {
@@ -147,14 +112,7 @@ export default {
       userNameError: '',
       //用户邮箱必须输入校验信息
       userEmailError: '',
-      rules: {
-        userName: [{ required: true, message: '请输入用户名' }, { validator: validateNecessary }],
-        userEmail: [{ required: true, message: '请输入邮箱' }, { validator: validateEMail }],
-        userPwd: [
-          { required: true, message: '请输入密码', trigger: 'blur' },
-          { validator: isPassword, trigger: 'blur' },
-        ],
-      },
+
       // 用户表单
       form: {
         userName: '',
@@ -164,6 +122,30 @@ export default {
         bestRankLevel: '',
         priorityPosition: '',
         secondaryPosition: '',
+      },
+
+      registerRules: {
+        userName: [{ required: true, message: '请输入您的昵称', trigger: 'blur' }],
+        userEmail: [
+          { required: true, message: '请输入邮箱地址', trigger: 'blur' },
+          { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] },
+        ],
+        userPwd: [
+          { required: true, message: '请输入密码', trigger: 'blur' },
+          { min: 6, max: 20, message: '长度在 6 到 20 个字符', trigger: ['blur', 'change'] },
+        ],
+        currentRankLevel: [{ required: true, message: '请选择当前段位', trigger: 'change' }],
+        bestRankLevel: [{ required: true, message: '请选择最高段位', trigger: 'change' }],
+        priorityPosition: [{ required: true, message: '请选择首选位置', trigger: 'change' }],
+        secondaryPosition: [{ required: true, message: '请选择次选位置', trigger: 'change' }],
+      },
+
+      loginRules: {
+        userEmail: [
+          { required: true, message: '请输入邮箱地址', trigger: 'blur' },
+          { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] },
+        ],
+        userPwd: [{ required: true, message: '请输入密码', trigger: 'blur' }],
       },
 
       rankLevelOptions: [
@@ -213,23 +195,13 @@ export default {
       ],
     };
   },
-  computed: {
-    vpcPlaceholder() {
-      return this.isValid ? '请输入游戏昵称' : this.userNameError;
-    },
-    emailPlaceholder() {
-      return this.isValid ? '请输入邮箱' : this.userEmailError;
-    },
-  },
   methods: {
     changeType(paramType) {
       // 横幅展示画面注册和登录按钮切换
       const container = document.getElementById('container');
-      paramType
-        ? container.classList.remove('right-panel-active')
-        : container.classList.add('right-panel-active');
+      paramType ? container.classList.remove('right-panel-active') : container.classList.add('right-panel-active');
       // 初始化数据
-      this.form = [];
+      this.form = {};
       this.emailError = false;
       this.passwordError = false;
       // 注册请求时，email唯一性验证
@@ -288,8 +260,6 @@ export default {
                 password: self.form.userPwd,
                 email: self.form.userEmail,
                 currentRankLevel: self.form.currentRankLevel,
-                occupation: self.form.occupation,
-                currentRankLevel: self.form.currentRankLevel,
                 bestRankLevel: self.form.bestRankLevel,
                 priorityPosition: self.form.priorityPosition,
                 secondaryPosition: self.form.secondaryPosition,
@@ -313,23 +283,8 @@ export default {
               console.log(err);
             });
         } else {
-          //设定form校验是否存在error
-          self.isValid = false;
-          //设定input框字体变红flg
-          self.existed = true;
-          const errorLength = document.getElementsByClassName('el-form-item__error').length;
-
-          //获取validate的信息
-          self.userNameError = document.getElementsByClassName('el-form-item__error')[0].innerText;
-          self.userEmailError = document.getElementsByClassName('el-form-item__error')[1].innerText;
-          //清空下方el-form自带的message信息
-          self.$refs[formName].clearValidate();
-          self.formName = {};
-
-          // //清空下方el-form自带的message信息
-          // document.getElementsByClassName('el-form-item__error')[0].innerText = '';
-          // //清空下方el-form自带的message信息
-          // document.getElementsByClassName('el-form-item__error')[1].innerText = '';
+          console.log('error submit!!');
+          return false;
         }
       });
     },
@@ -339,13 +294,4 @@ export default {
 
 <style scoped>
 @import '../assets/css/login.css';
-
-/* error状态 placeholder字体变红*/
-.empty /deep/ input::-webkit-input-placeholder {
-  -webkit-text-fill-color: red;
-}
-
-.emailEmpty /deep/ input::-webkit-input-placeholder {
-  -webkit-text-fill-color: red;
-}
 </style>

@@ -1,11 +1,10 @@
 * {
+  margin: 0;
+  padding: 0;
   box-sizing: border-box;
-  font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei',
-    '微软雅黑', Arial, sans-serif;
 }
 
 .center {
-  background: #f6f5f7;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -13,7 +12,7 @@
   font-family: 'Montserrat', sans-serif;
   height: 100vh;
   margin: -20px 0 50px;
-  background-image: url('../Background.jpg');
+  background: #f6f5f7 url('../Background.jpg');
 }
 
 h1 {
@@ -81,11 +80,13 @@ form {
   text-align: center;
 }
 
-input {
+.el-input {
   background-color: #eee;
   border: none;
-  padding: 12px 15px;
-  margin: 8px 0;
+  margin: 0 0;
+  width: 100%;
+}
+.el-form-item {
   width: 100%;
 }
 
