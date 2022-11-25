@@ -17,7 +17,7 @@
 
           <el-row>
             <el-col :span="11">
-              <el-form-item prop="currentRankLevel">
+              <el-form-item prop="currentRankLevel" :required="isHaveTo">
                 <el-select v-model="form.currentRankLevel" placeholder="当前段位">
                   <el-option v-for="item in rankLevelOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
                 </el-select>
@@ -93,9 +93,18 @@
 </template>
 
 <script>
+import { validateEMail, isPassword, validateNecessary } from '@/utils/validate';
+
 export default {
   name: 'login-register',
   data() {
+    let validateName = (rule, value, callback) => {
+      if ((this.form.currentRankLevel == '' || this.form.currentRankLevel == undefined || this.form.currentRankLevel == null) && this.isHaveTo) {
+        callback(new Error('请输入当前段位'));
+      } else {
+        callback();
+      }
+    };
     return {
       // 登录验证
       emailError: false,
@@ -112,7 +121,7 @@ export default {
       userNameError: '',
       //用户邮箱必须输入校验信息
       userEmailError: '',
-
+      isShow: false,
       // 用户表单
       form: {
         userName: '',
@@ -134,7 +143,7 @@ export default {
           { required: true, message: '请输入密码', trigger: 'blur' },
           { min: 6, max: 20, message: '长度在 6 到 20 个字符', trigger: ['blur', 'change'] },
         ],
-        currentRankLevel: [{ required: true, message: '请选择当前段位', trigger: 'change' }],
+        currentRankLevel: [{ validator: validateName }],
         bestRankLevel: [{ required: true, message: '请选择最高段位', trigger: 'change' }],
         priorityPosition: [{ required: true, message: '请选择首选位置', trigger: 'change' }],
         secondaryPosition: [{ required: true, message: '请选择次选位置', trigger: 'change' }],
@@ -195,12 +204,20 @@ export default {
       ],
     };
   },
+
+  computed: {
+    isHaveTo: function () {
+      return this.isShow;
+    },
+  },
   methods: {
     changeType(paramType) {
       // 横幅展示画面注册和登录按钮切换
       const container = document.getElementById('container');
       paramType ? container.classList.remove('right-panel-active') : container.classList.add('right-panel-active');
       // 初始化数据
+      this.$refs['registerForm'].clearValidate();
+      this.isHaveTo = false;
       this.form = {};
       this.emailError = false;
       this.passwordError = false;
@@ -249,6 +266,8 @@ export default {
     },
     register(formName) {
       const self = this;
+      this.isShow = true;
+
       this.$refs[formName].validate((valid) => {
         if (valid) {
           self
@@ -283,6 +302,7 @@ export default {
               console.log(err);
             });
         } else {
+          this.isShow = true;
           console.log('error submit!!');
           return false;
         }

@@ -12,3 +12,13 @@ export function isPassword(rule, value, callback) {
     }
   }
 }
+
+// 是否必填
+export function validateNecessary(rule, value, callback) {
+  if (value == '' || value == undefined || value == null) {
+    const self = this;
+    callback(new Error('请选择用户名'));
+  } else {
+    callback();
+  }
+}
