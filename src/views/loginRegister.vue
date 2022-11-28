@@ -17,7 +17,7 @@
 
           <el-row>
             <el-col :span="11">
-              <el-form-item prop="currentRankLevel" :required="isHaveTo">
+              <el-form-item prop="currentRankLevel">
                 <el-select v-model="form.currentRankLevel" placeholder="当前段位">
                   <el-option v-for="item in rankLevelOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
                 </el-select>
@@ -93,8 +93,6 @@
 </template>
 
 <script>
-import { validateEMail, isPassword, validateNecessary } from '@/utils/validate';
-
 export default {
   name: 'login-register',
   data() {
@@ -149,7 +147,7 @@ export default {
         ],
         userPwd: [
           { required: true, message: '请输入密码', trigger: 'blur' },
-          { min: 6, max: 20, message: '长度在 6 到 20 个字符', trigger: ['blur', 'change'] },
+          { pattern: /(?=.*\d)(?=.*[a-zA-Z])(?=.*[^a-zA-Z0-9]).{8,12}/, message: '请至少输入八位数字+字母+符号密码', trigger: ['blur', 'change'] },
         ],
         currentRankLevel: [{ validator: validateSelect, trigger: ['blur', 'change'] }],
         bestRankLevel: [{ validator: validateSelect, trigger: ['blur', 'change'] }],
@@ -211,12 +209,6 @@ export default {
         },
       ],
     };
-  },
-
-  computed: {
-    isHaveTo: function () {
-      return this.isShow;
-    },
   },
   methods: {
     changeType(paramType) {
@@ -311,7 +303,6 @@ export default {
               console.log(err);
             });
         } else {
-          this.isShow = true;
           console.log('error submit!!');
           return false;
         }
