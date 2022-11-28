@@ -3,7 +3,7 @@
     <div class="container" id="container">
       <!-- 注册画面部分 -->
       <div class="form-container sign-up-container">
-        <el-form action="#" ref="registerForm" :model="form" :rules="registerRules">
+        <el-form action="#" status-icon ref="registerForm" :model="form" :rules="registerRules">
           <h1>注册您的账户</h1>
           <el-form-item prop="userName">
             <el-input v-model="form.userName" placeholder="游戏昵称" />
@@ -17,7 +17,7 @@
 
           <el-row>
             <el-col :span="11">
-              <el-form-item prop="currentRankLevel" :required="isHaveTo">
+              <el-form-item prop="currentRankLevel">
                 <el-select v-model="form.currentRankLevel" placeholder="当前段位">
                   <el-option v-for="item in rankLevelOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
                 </el-select>
@@ -96,9 +96,23 @@
 export default {
   name: 'login-register',
   data() {
-    let validateName = (rule, value, callback) => {
-      if ((this.form.currentRankLevel == '' || this.form.currentRankLevel == undefined || this.form.currentRankLevel == null) && this.isHaveTo) {
-        callback(new Error('请输入当前段位'));
+    let validateSelect = (rule, value, callback) => {
+      debugger;
+      if (!value && this.selectCheck) {
+        switch (rule.field) {
+          case 'currentRankLevel':
+            callback(new Error('请输入当前段位'));
+            break;
+          case 'bestRankLevel':
+            callback(new Error('请输入最高段位'));
+            break;
+          case 'priorityPosition':
+            callback(new Error('请输入首选位置'));
+            break;
+          case 'secondaryPosition':
+            callback(new Error('请输入次选位置'));
+            break;
+        }
       } else {
         callback();
       }
@@ -112,7 +126,8 @@ export default {
       // TODO 不知道干啥的，问李优确认
       newSign: false,
       // 解决select验证
-      isShow: false,
+      selectCheck: false,
+
       // 用户表单
       form: {
         userName: '',
@@ -134,10 +149,10 @@ export default {
           { required: true, message: '请输入密码', trigger: 'blur' },
           { pattern: /(?=.*\d)(?=.*[a-zA-Z])(?=.*[^a-zA-Z0-9]).{8,12}/, message: '请至少输入八位数字+字母+符号密码', trigger: ['blur', 'change'] },
         ],
-        currentRankLevel: [{ validator: validateName }],
-        bestRankLevel: [{ required: true, message: '请选择最高段位', trigger: ['blur', 'change'] }],
-        priorityPosition: [{ required: true, message: '请选择首选位置', trigger: ['blur', 'change'] }],
-        secondaryPosition: [{ required: true, message: '请选择次选位置', trigger: ['blur', 'change'] }],
+        currentRankLevel: [{ validator: validateSelect, trigger: ['blur', 'change'] }],
+        bestRankLevel: [{ validator: validateSelect, trigger: ['blur', 'change'] }],
+        priorityPosition: [{ validator: validateSelect, trigger: ['blur', 'change'] }],
+        secondaryPosition: [{ validator: validateSelect, trigger: ['blur', 'change'] }],
       },
 
       loginRules: {
@@ -202,7 +217,8 @@ export default {
       paramType ? container.classList.remove('right-panel-active') : container.classList.add('right-panel-active');
       // 初始化数据
       this.$refs['registerForm'].clearValidate();
-      this.isHaveTo = false;
+
+      this.selectCheck = false;
       this.form = {};
       this.emailError = false;
       this.passwordError = false;
@@ -249,11 +265,11 @@ export default {
           });
       }
     },
-    register(formName) {
+    register(registerForm) {
       const self = this;
-      this.isShow = true;
+      this.selectCheck = true;
 
-      this.$refs[formName].validate((valid) => {
+      this.$refs[registerForm].validate((valid) => {
         if (valid) {
           self
             .$axios({
@@ -287,7 +303,6 @@ export default {
               console.log(err);
             });
         } else {
-          this.isShow = true;
           console.log('error submit!!');
           return false;
         }
