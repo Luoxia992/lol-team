@@ -3,7 +3,7 @@
     <div class="container" id="container">
       <!-- 注册画面部分 -->
       <div class="form-container sign-up-container">
-        <el-form action="#" ref="registerForm" :model="form" :rules="registerRules">
+        <el-form action="#" status-icon ref="registerForm" :model="form" :rules="registerRules">
           <h1>注册您的账户</h1>
           <el-form-item prop="userName">
             <el-input v-model="form.userName" placeholder="游戏昵称" />
@@ -98,9 +98,23 @@ import { validateEMail, isPassword, validateNecessary } from '@/utils/validate';
 export default {
   name: 'login-register',
   data() {
-    let validateName = (rule, value, callback) => {
-      if ((this.form.currentRankLevel == '' || this.form.currentRankLevel == undefined || this.form.currentRankLevel == null) && this.isHaveTo) {
-        callback(new Error('请输入当前段位'));
+    let validateSelect = (rule, value, callback) => {
+      debugger;
+      if (!value && this.selectCheck) {
+        switch (rule.field) {
+          case 'currentRankLevel':
+            callback(new Error('请输入当前段位'));
+            break;
+          case 'bestRankLevel':
+            callback(new Error('请输入最高段位'));
+            break;
+          case 'priorityPosition':
+            callback(new Error('请输入首选位置'));
+            break;
+          case 'secondaryPosition':
+            callback(new Error('请输入次选位置'));
+            break;
+        }
       } else {
         callback();
       }
@@ -113,15 +127,9 @@ export default {
       emailExisted: false,
       // TODO 不知道干啥的，问李优确认
       newSign: false,
-      // 控制placeholder 文字
-      isValid: true,
-      // 控制placeholder 样式
-      existed: false,
-      //用户名必须输入校验信息
-      userNameError: '',
-      //用户邮箱必须输入校验信息
-      userEmailError: '',
-      isShow: false,
+      // 解决select验证
+      selectCheck: false,
+
       // 用户表单
       form: {
         userName: '',
@@ -143,10 +151,10 @@ export default {
           { required: true, message: '请输入密码', trigger: 'blur' },
           { min: 6, max: 20, message: '长度在 6 到 20 个字符', trigger: ['blur', 'change'] },
         ],
-        currentRankLevel: [{ validator: validateName }],
-        bestRankLevel: [{ required: true, message: '请选择最高段位', trigger: 'change' }],
-        priorityPosition: [{ required: true, message: '请选择首选位置', trigger: 'change' }],
-        secondaryPosition: [{ required: true, message: '请选择次选位置', trigger: 'change' }],
+        currentRankLevel: [{ validator: validateSelect, trigger: ['blur', 'change'] }],
+        bestRankLevel: [{ validator: validateSelect, trigger: ['blur', 'change'] }],
+        priorityPosition: [{ validator: validateSelect, trigger: ['blur', 'change'] }],
+        secondaryPosition: [{ validator: validateSelect, trigger: ['blur', 'change'] }],
       },
 
       loginRules: {
@@ -217,7 +225,8 @@ export default {
       paramType ? container.classList.remove('right-panel-active') : container.classList.add('right-panel-active');
       // 初始化数据
       this.$refs['registerForm'].clearValidate();
-      this.isHaveTo = false;
+
+      this.selectCheck = false;
       this.form = {};
       this.emailError = false;
       this.passwordError = false;
@@ -236,14 +245,14 @@ export default {
             method: 'post',
             url: 'http://127.0.0.1:10520/api/user/login',
             data: {
-              email: self.form.useremail,
-              password: self.form.userpwd,
+              email: self.form.userEmail,
+              password: self.form.userPwd,
             },
           })
           .then((res) => {
             switch (res.data) {
               case 0:
-                const param = self.form.useremail;
+                const param = self.form.userEmail;
                 this.$router.push({ path: '/organizeteam', query: { email: param } });
                 if (!self.newSign) {
                   this.$message.success('登陆成功！');
@@ -264,11 +273,11 @@ export default {
           });
       }
     },
-    register(formName) {
+    register(registerForm) {
       const self = this;
-      this.isShow = true;
+      this.selectCheck = true;
 
-      this.$refs[formName].validate((valid) => {
+      this.$refs[registerForm].validate((valid) => {
         if (valid) {
           self
             .$axios({
