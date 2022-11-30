@@ -3,7 +3,7 @@
     <div class="container" id="container">
       <!-- 注册画面部分 -->
       <div class="form-container sign-up-container">
-        <el-form action="#" status-icon ref="registerForm" :model="form" :rules="registerRules">
+        <el-form action="#" status-icon ref="registerForm" :model="form" :rules="registerRules" @submit.native.prevent>
           <h1>注册您的账户</h1>
           <el-form-item prop="userName">
             <el-input v-model="form.userName" placeholder="游戏昵称" />
@@ -56,7 +56,7 @@
 
       <!-- 登录画面部分 -->
       <div class="form-container sign-in-container">
-        <el-form action="#" ref="loginForm" :model="form" :rules="loginRules">
+        <el-form action="#" ref="loginForm" :model="form" :rules="loginRules" @submit.native.prevent>
           <h1>登录</h1>
           <el-form-item prop="userEmail">
             <el-input type="email" v-model="form.userEmail" placeholder="邮箱" />
@@ -72,13 +72,13 @@
       <div class="overlay-container">
         <div class="overlay">
           <div class="overlay-panel overlay-left">
-            <el-image :src="require('../assets/logo.png')" class="logo"></el-image>
+            <el-image :src="logoPath" class="logo"></el-image>
             <p>与我们一起开黑，请使用您的个人信息登录</p>
             <button class="ghost" id="signIn" @click="changeType(true)">登录</button>
           </div>
 
           <div class="overlay-panel overlay-right">
-            <el-image :src="require('../assets/logo.png')" class="logo"></el-image>
+            <el-image :src="logoPath" class="logo"></el-image>
             <p>输入您的个人详细信息，与我们一起开黑！</p>
             <button class="ghost" id="signUp" @click="changeType(false)">注册</button>
           </div>
@@ -97,7 +97,6 @@ export default {
   name: 'login-register',
   data() {
     let validateSelect = (rule, value, callback) => {
-      debugger;
       if (!value && this.selectCheck) {
         switch (rule.field) {
           case 'currentRankLevel':
@@ -128,6 +127,8 @@ export default {
       // 解决select验证
       selectCheck: false,
 
+      logoPath: require('../assets/logo.png'),
+
       // 用户表单
       form: {
         userName: '',
@@ -139,6 +140,7 @@ export default {
         secondaryPosition: '',
       },
 
+      // 注册表单验证方法
       registerRules: {
         userName: [{ required: true, message: '请输入您的昵称', trigger: 'blur' }],
         userEmail: [
@@ -155,6 +157,7 @@ export default {
         secondaryPosition: [{ validator: validateSelect, trigger: ['blur', 'change'] }],
       },
 
+      // 登录表单验证方法
       loginRules: {
         userEmail: [
           { required: true, message: '请输入邮箱地址', trigger: 'blur' },
@@ -163,6 +166,7 @@ export default {
         userPwd: [{ required: true, message: '请输入密码', trigger: 'blur' }],
       },
 
+      // 段位option
       rankLevelOptions: [
         {
           value: '9',
@@ -186,6 +190,7 @@ export default {
         },
       ],
 
+      // 擅长位置option
       occupationOptions: [
         {
           value: 'Top',
@@ -288,14 +293,14 @@ export default {
             .then((res) => {
               switch (res.data) {
                 case 0:
-                  this.$message.success('注册成功！');
-                  this.newSign = true;
-                  this.login();
+                  this.$message.success('注册成功,请登录您的账号！');
+                  // 从注册画面跳转登录画面
+                  this.changeType(true);
                   break;
                 case -1:
                   this.emailExisted = true;
                   this.form.username = '';
-                  this.$message.error('用户名已存在，请重新输入!');
+                  this.$message.error('邮箱已被注册，请重新输入!');
                   break;
               }
             })

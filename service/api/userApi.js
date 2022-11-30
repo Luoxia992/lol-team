@@ -32,50 +32,39 @@ router.post('/login', (req, res) => {
 // 注册接口
 router.post('/add', (req, res) => {
   const params = req.body;
-  const sel_sql = $sql.user.select + " where username = '" + params.username + "'";
+  const sel_sql = $sql.user.select + " where email = '" + params.email + "'";
   const add_sql = $sql.user.add;
   console.log(sel_sql);
-  conn.query(sel_sql, params.username, (error, results) => {
+  conn.query(sel_sql, params.email, (error, results) => {
     if (error) {
       console.log(err);
     }
-    if (results.length != 0 && params.username == results[0].username) {
-      res.send('-1'); // -1 表示用户名已经存在
+    if (results.length != 0 && params.email == results[0].email) {
+      res.send('-1'); // -1 表示用户邮箱已被注册
     } else {
-      conn.query(
-        add_sql,
-        [params.username, params.password, params.email, params.rankLevel, params.occupation],
-        (err, rst) => {
-          if (err) {
-            console.log(err);
-          } else {
-            console.log(rst);
-            const sql = $sql.user.select + " where username = '" + params.username + "'";
-            conn.query(sql, params.username, (error, results) => {
-              const userId = results[0].userId;
-              const userInfoInsertSql = $sql.userGameInfo.insert;
-              conn.query(
-                userInfoInsertSql,
-                [
-                  userId,
-                  params.username,
-                  params.currentRankLevel,
-                  params.bestRankLevel,
-                  params.priorityPosition,
-                  params.secondaryPosition,
-                ],
-                (err, rst) => {
-                  if (err) {
-                    console.log(err);
-                  } else {
-                    res.send('0'); // 0 表示用户创建成功
-                  }
-                },
-              );
-            });
-          }
-        },
-      );
+      conn.query(add_sql, [params.username, params.password, params.email], (err, rst) => {
+        if (err) {
+          console.log(err);
+        } else {
+          console.log(rst);
+          const sql = $sql.user.select + " where email = '" + params.email + "'";
+          conn.query(sql, params.username, (error, results) => {
+            const userId = results[0].userId;
+            const userInfoInsertSql = $sql.userGameInfo.insert;
+            conn.query(
+              userInfoInsertSql,
+              [userId, params.username, params.currentRankLevel, params.bestRankLevel, params.priorityPosition, params.secondaryPosition],
+              (err, rst) => {
+                if (err) {
+                  console.log(err);
+                } else {
+                  res.send('0'); // 0 表示用户创建成功
+                }
+              },
+            );
+          });
+        }
+      });
     }
   });
 });
